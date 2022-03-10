@@ -5,8 +5,9 @@
 #SBATCH --cpus-per-task 1
 #SBATCH --mem=128G
 
-DATADIR=nfun-med
-OUTDIR=${DATADIR}/fuse-${1}_jaffal_out
+DATADIR=longreads
+JAFFAL_DATADIR=longreads_jaffal
+OUTDIR=${JAFFAL_DATADIR}/fusions-${1}-${5}-${6}-${4}-jaffal_out
 
 if [[ ! -d "${OUTDIR}" ]]
 then
@@ -16,4 +17,4 @@ cd ${OUTDIR}
 
 #singularity exec --pid --bind /datastore longgf_0.1.2--h05f6578_1.sif \
   ~/JAFFA-version-2.2/tools/bin/bpipe run ~/JAFFA-version-2.2/JAFFAL.groovy \
-  ../../${DATADIR}/fuse-${1}-*.fq.gz
+  ../../${DATADIR}/fusions-${1}-${5}-${6}-*.fq.gz

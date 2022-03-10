@@ -1,20 +1,36 @@
 
 library(Biostrings)
 library(ggplot2)
-library(GenomicFeatures)
-library(TxDb.Hsapiens.UCSC.hg38.knownGene)
+#library(GenomicFeatures)
+#library(TxDb.Hsapiens.UCSC.hg38.knownGene)
 
-graph_dir <- 'graph'
+## args:
+## 1: reference transcriptome
+## 2: end transcript file with fusions
+## 3: end file with gene metadata
+## 4: number of fusions
 
-fasta <- readDNAStringSet('Homo_sapiens.cdna_50k.fa')
 
-end_dna_file <- 'Homo_sapiens.cdna_50k.fusion_transcripts_3.fasta'
+#graph_dir <- 'graph'
+
+arg <- commandArgs(trailingOnly=TRUE)
+
+message(arg[1])
+message(arg[2])
+message(arg[3])
+message(arg[4])
+
+fasta <- readDNAStringSet(arg[1])
+
+end_dna_file <- arg[2]
 
 abundance_file <- '/home/vantwisk/nanosim/pre-trained_models/human_NA12878_cDNA_Bham1_guppy/expression_abundance.tsv'
 
 end_dir_file <- '/home/vantwisk/nanosim/pre-trained_models/human_NA12878_cDNA_Bham1_guppy/expression_abundance_fusions3.tsv'
 
-end_gene_file <- 'hs_fusion3.txt'
+end_gene_file <- arg[3]
+
+nfusions <- as.numeric(arg[4])
 
 mm <- names(fasta)
 ss <- strsplit(mm, ' ')
@@ -24,7 +40,7 @@ split_fusion <- function(){
     adu <- read.table(abundance_file, stringsAsFactors=F, sep="\t", header=T, row.names=NULL)
     adu <- adu[order(adu[,3], decreasing=T),]
     adu <- adu[adu[,3] > 10,]
-    bib <- lapply(1:2500, function(x) {
+    bib <- lapply(1:nfusions, function(x) {
 	wh1 <- numeric()
 	wh2 <- numeric()
 	while(length(wh1) == 0 || length(wh2) == 0){
@@ -55,11 +71,13 @@ split_fusion <- function(){
         df <- data.frame(target_id = tname, est_counts = est_counts, tpm = tpm)
         list(s3, df, df2, list(s1, s2), list(lengths(s1), lengths(s2)))
     })
+
     dnas <- lapply(bib, function(x) x[[1]])
     fours <- lapply(bib, function(x) x[[4]])
     dnas <- do.call(c, dnas)
     writeXStringSet(dnas, end_dna_file)
     
+    if(FALSE){
     val <- lapply(bib, function(x){
       ss <- sum(str_count(as.character(x[[1]]), c("G", "C")))
       ll <- lengths(x[[1]])
@@ -80,6 +98,7 @@ split_fusion <- function(){
                    binwidth = 100, colour = "blue", fill = "white")+
        geom_density() + xlim(0, 10000)
     dev.off()
+}
 
     dfs <- lapply(bib, function(x) x[[2]])
     dfs <- do.call(rbind, dfs)
