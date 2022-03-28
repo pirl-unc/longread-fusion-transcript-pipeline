@@ -5,9 +5,9 @@ FUSE_TRANSCRIPTOME=test_transcriptome.fa
 FUSE_META=test_fusions1.txt
 NFUSIONS=500
 
-REPLICATES=10
-COVERAGE=(3 5 10 30 50)
-QUALITY=('87,97,5' '75,90,8' '95,100,4')
+REPLICATES=3
+COVERAGE=(50 100) #(3 5 10 30 50)
+QUALITY=('95,100,4') #('87,97,5' '75,90,8' '95,100,4')
 TECH=('pacbio2016' 'nanopore2020')
 
 for i in $(seq 1 ${REPLICATES}); do
