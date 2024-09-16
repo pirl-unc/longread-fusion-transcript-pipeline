@@ -3,13 +3,13 @@ name: Build and Push Fusion-Transcript-Tooling-Pipeline Image to Docker Hub
 on: push
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ghcr.io/astral-sh/uv:0.2.12
     steps:
       - name: test docker image
         uses: actions/checkout@v4
   push_to_registry:
     name: push docker image to hub
-    runs-on: ubuntu-latest
+    runs-on: ghcr.io/astral-sh/uv:0.2.12
     steps:
       - name: check repository
         uses: actions/checkout@v4
