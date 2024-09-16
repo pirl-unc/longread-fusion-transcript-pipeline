@@ -2,6 +2,12 @@ name: Build and Push Fusion-Transcript-Tooling-Pipeline Image to Docker Hub
 
 on: push
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Test the Docker image
+        run: docker-compose up -d 
   push_to_registry:
     name: push docker image to hub
     runs-on: ubuntu-latest
