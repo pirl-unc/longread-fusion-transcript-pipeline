@@ -6,7 +6,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: test docker image
-        uses: actions/checkout@v4
         run: docker-compose up -d 
   push_to_registry:
     name: push docker image to hub
