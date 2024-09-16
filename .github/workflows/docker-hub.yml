@@ -1,47 +1,23 @@
 name: Build and Push Fusion-Transcript-Tooling-Pipeline Image to Docker Hub
 
-on:
-  push:
-    branches: ["main"]
-  pull_request:
-    branches: ["main"]
-
-env:
-  # Use docker.io for Docker Hub if empty
-  REGISTRY: docker.io
-  # github.repository as <account>/<repo>
-  IMAGE_NAME: ${{ github.repository }}
-
+on: push
 jobs:
-
-  build:
-
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v4
-    - name: Build the Docker image
   push_to_registry:
-    name: Push Docker image to Docker Hub
+    name: push docker image to hub
     runs-on: ubuntu-latest
     steps:
-      - name: Log in to Docker Hub
-        uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: check repository
+        uses: actions/checkout@v4
 
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
+      - name: login to docker registry
+        uses: docker/login-action@v3
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          username: ${{secrets.DOCKERHUB_USERNAME}}
+          password: ${{secrets.DOCKERHUB_TOKEN}}
 
-      - name: Build and push Docker image
+      - name: build and push docker image to registry
         uses: docker/build-push-action@v5
         with:
-          context: "{{defaultContext}}"
+          context: DockerFileFolder/
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-
+          tags: vantwisk/longread-fusion-transcript-pipeline:latest
