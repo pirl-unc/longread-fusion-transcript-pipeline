@@ -7,6 +7,7 @@
 
 OUTDIR=longreads
 
+
 [ ! -d ${OUTDIR} ] && mkdir ${OUTDIR}
 echo $1
 echo $2

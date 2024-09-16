@@ -3,6 +3,7 @@ library(Biostrings)
 
 arg <- commandArgs(trailingOnly=TRUE)
 
+
 fa <- readDNAStringSet(arg[2])
 #fa <- Biostrings::readDNAStringSet('longread-fusion-transcript-pipeline/Homo_sapiens.GRCh38.cdna.all.fa')
 

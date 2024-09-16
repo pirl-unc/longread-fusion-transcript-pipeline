@@ -5,6 +5,7 @@
 #SBATCH -n 1
 #SBATCH -t 02:00:00
 
+
 OUTDIR=shortreads
 [ ! -d ${OUTDIR} ] && mkdir ${OUTDIR}
 
