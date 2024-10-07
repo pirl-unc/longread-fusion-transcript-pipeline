@@ -5,17 +5,18 @@
 #SBATCH --cpus-per-task 1
 #SBATCH --mem=128G
 
-DATADIR=longreads
-MINIMAP_DATADIR=longreads_mappings
-GENION_DATADIR=longreads_genion
+DATADIR=/datastore/scratch/users/vantwisk/sim/longreads_training${11}k
+MINIMAP_DATADIR=/datastore/scratch/users/vantwisk/sim/longreads_training${11}k_minimap2
+GENION_DIR=/datastore/scratch/users/vantwisk/sim/longreads_training${11}k_genion
+
+[ ! -d ${GENION_DIR} ] && mkdir ${GENION_DIR}
 
 #singularity exec --pid --bind /datastore longgf_0.1.2--h05f6578_1.sif \
-  genion \
-  -t 32 \
-  --min-support 2 \
+genion \
+  --min-support ${10} \
   -i ${DATADIR}/fusions-${1}-${5}-${6}-${4}.fq.gz \
   --gtf Homo_sapiens.GRCh38.105.gtf \
   --gpaf ${MINIMAP_DATADIR}/fusions-${1}-${5}-${6}-${4}.paf \
   -s ${MINIMAP_DATADIR}/fusions-${1}-${5}-${6}-${4}-selfalign.tsv \
   -d genomicSuperDups.txt \
-  -o ${GENION_DATADIR}/fusions-${1}-${5}-${6}-${4}-genion.tsv
+  -o ${GENION_DIR}/fusions-${1}-${5}-${6}-${4}-genion-minsup-${10}.tsv

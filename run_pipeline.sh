@@ -3,16 +3,15 @@ DATADIR=pfun-med
 COVERAGE=50
 REPLICATES=10
 
-Rscript split_transcripts.R
+bash generate_annotation_resources.sh
+bash generate_breakpoints.sh
+bash generate_simulated_data.sh
+bash generate_mapping.sh
+bash generate_arriba.sh
+bash generate_longgf.sh
+bash generate_jaffal.sh
+bash generate_genion.sh
+bash generate_fusionseeker.sh
+bash generate_pbfusion.sh
 
-bash badread.sh ${COVERAGE} 1 1 ${REPLICATES}
-bash fqc.sh ${COVERAGE} 1 1 ${REPLCIATES}
-bash minimap2.sh ${COVERAGE} 1 1 ${REPLICATES}
-bash minimap2_paf.sh ${COVERAGE} 1 1 ${REPLICATES}
-bash genself.sh ${COVERAGE} 1 1 ${REPLICATES}
-bash sort.sh ${COVERAGE} 1 1 ${REPLICATES}
-bash longread.sh ${COVERAGE} 1 1 ${REPLICATES}
-bash genion.sh ${COVERAGE} 1 1 ${REPLICATES}
-bash jaffal.sh ${COVERAGE} 1 1 ${REPLICATES}
-
-Rscript generate_figures
+Rscript generate_figures.R
