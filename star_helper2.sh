@@ -5,15 +5,13 @@
 #SBATCH --time 12:00:00
 #SBATCH --mem=128G
 
-DATADIR=/datastore/scratch/users/vantwisk/sim/shortreads_training${6}k
-MAPPING_DIR=/datastore/scratch/users/vantwisk/sim/shortreads_training${6}k_mapping
+DATADIR=${SIM_STORAGE_DIR}/shortreads_${6}k
+MAPPING_DIR=${ALIGNMENT_STORAGE_DIR}/shortreads_${6}k_star
 
 [ ! -d ${MAPPING_DIR} ] && mkdir ${MAPPING_DIR}
 
-#for j in $(seq 1 10); do
-#singularity exec --pid --bind /datastore star_latest.sif \
 /home/vantwisk/STAR-2.7.10a/bin/Linux_x86_64_static/STAR \
-    --runThreadN 16 \
+    --runThreadN ${THREADS} \
     --genomeDir ../hg38_star_index --genomeLoad NoSharedMemory \
     --readFilesIn ${DATADIR}/fusions-${1}-${4}-${5}-1.fq ${DATADIR}/fusions-${1}-${4}-${5}-2.fq \
     --outFileNamePrefix ${MAPPING_DIR}/fusions-${1}-${4}-${5}- \
