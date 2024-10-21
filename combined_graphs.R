@@ -1,30 +1,29 @@
 ## Args 1 <- Simulated Fusions
 
+arg <- commandArgs(trailingOnly=TRUE)
+arg[1] <- '/home/vantwisk/vantwisk/fusions/seq_run3/ref/fusim_ref_100.txt'
+arg[2] <- '/home/vantwisk/vantwisk/fusions/seq_run3/results/genion/longreads_1k_genion'
+arg[3] <- '/home/vantwisk/vantwisk/fusions/seq_run3/results/jaffal/longreads_1k_jaffal'
+arg[4] <- '/home/vantwisk/vantwisk/fusions/seq_run3/results/longgf/longreads_1k_longgf'
 
-valid <- read.table('longread-fusion-transcript-pipeline/test_fusions1.txt', stringsAsFactors=F, header=T)
-colnames(valid) <- c('V1', 'V2')
+valid <- read.table(arg[1], sep="\t", stringsAsFactors=F, header=T)
 
-valid <- read.table('longread-fusion-transcript-pipeline/training1k_fusions.txt', stringsAsFactors=F, header=T)
-colnames(valid) <- c('V1', 'V2')
-
-coverage <- c('3', '5', '10', '30', '50', '100')
-identities <- c('87,97,5', '75,90,8', '95,100,4')
-tech <- c('pacbio2016') #, 'nanopore2020')
-#tech <- c(2, 5, 10) #c(10, 30, 50, 100, 300, 500)
-replicates <- 10
+coverage <- c('3', '10')
+identities <- c('87,97,5', '95,100,4')
+tech <- c('pacbio2016', 'nanopore2020')
+replicates <- 1
 #identities <- c("", "-minsup5", "_minsup10")
 
 fuseg <- lapply(coverage, function(i) {
   res1 <- lapply(identities, function(x) {
     res2 <- lapply(tech, function(j) {
       res3 <- lapply(1:replicates, function(r) {
-        filename <- paste0('/home/vantwisk/vantwisk/fusions/longread-fusion-transcript-pipeline/longreads_training1k_genion/fusions-', i,'-', x, '-', j, '-', r,'-genion-minsup-2.tsv')
+        filename <- paste0(arg[2], '/fusions-', i,'-', x, '-', j, '-', r,'-genion-minsup-1.tsv')
         message(filename)
         if (file.size(filename) == 0L){
           data.frame(tpos = 0, fpos=0, fneg=0, recall = 0, precision=0, coverage = i, quality=x, tech=j, replicate = r)
         } else {
         tab <- read.csv(filename, header=F, sep="\t", stringsAsFactors = F)
-        #tab <- tab[tab[,6] == "PASS:GF",]
         ss <- tab[,2]
         ss <- strsplit(ss, '::')
         taber <- do.call(rbind, ss)
@@ -40,10 +39,7 @@ fuseg <- lapply(coverage, function(i) {
         valid2['pass1'] <- ifelse(valid2[,1] %in% ll, 1, 0)
         valid2['pass2'] <- ifelse(valid2[,2] %in% ll, 1, 0)
         valid2['total'] <- ifelse(valid2['pass1'] + valid2['pass2'] > 0, 1, 0)
-        #dup <- duplicated(rbind(valid, tab))
-        #tab_total <- nrow(tab)
-        #total <- length(dup)
-        tpos <- sum(valid2["total"]) + 8
+        tpos <- sum(valid2["total"])
         fneg <- nrow(valid) - tpos
         fpos <- nrow(tab) - tpos
         fpos <- ifelse(fpos < 0, 0, fpos)
@@ -141,20 +137,13 @@ ggplot(fuseg, aes(x=coverage, y=tpos)) +
   # geom_errorbar(aes(ymin=mean-sd, ymax=mean+sd), width=.2,
   #               position=position_dodge(.9))
   ylab('mean true positives') + ggtitle('Nanopore2020 Mean found of control transcriptome with LongGF at coverage levels and read quality')
-valid <- read.table('training1k_fusions.txt', stringsAsFactors=F, header=T)
-colnames(valid) <- c('V1', 'V2')
 
-coverage <- c('5', '10', '30', '50', '100')
-identities <- c( '75,90,8', '87,97,5', '95,100,4')
-tech <- c('pacbio2016') # 'nanopore2020')
-replicates <- 10
-#identities <- c(0, 5, 10)
+if (FALSE){
 
 fusej <- lapply(coverage, function(i) {
   res1 <- lapply(identities, function(x) {
     res2 <- lapply(tech, function(j) {
-        filename <- paste0('/home/vantwisk/vantwisk/fusions/longread-fusion-transcript-pipeline/longreads1k_training_jaffal/fusions-', i,'-', x, '-', j,'-', 1,'-jaffal_out/jaffa_results.csv')
-        message(filename)
+        filename <- paste0(arg[3], '/fusions-', i,'-', x, '-', j,'-', 1,'-jaffal_out/jaffa_results.csv')
     tab <- read.csv(filename, sep=",", stringsAsFactors = F)
     tab <- tab[tab$spanning.reads > 2,]
     if(nrow(tab) == 0) {
@@ -175,10 +164,7 @@ fusej <- lapply(coverage, function(i) {
     valid2['pass1'] <- ifelse(valid2[,1] %in% ll, 1, 0)
     valid2['pass2'] <- ifelse(valid2[,2] %in% ll, 1, 0)
     valid2['total'] <- ifelse(valid2['pass1'] + valid2['pass2'] > 0, 1, 0)
-#    dup <- duplicated(rbind(valid, tab))
-#    tab_total <- nrow(tab)
-#    total <- length(dup)
-    tpos <- sum(valid2["total"]) + 6
+    tpos <- sum(valid2["total"])
     fneg <- nrow(valid) - tpos
     fpos <- nrow(tab) - tpos
     fpos <- ifelse(fpos < 0, 0, fpos)
@@ -266,7 +252,7 @@ fusec <- lapply(coverage, function(i) {
     res2 <- lapply(tech, function(j) {
       res3 <- lapply(1:replicates, function(r) {
         #res4 <- lapply(one, function(n) {
-        tab <- readLines(con=paste0('/home/vantwisk/vantwisk/fusions/longread-fusion-transcript-pipeline/longreads_training1k_longgf_control/fusions-', i,'-', x, '-', j,'-', r, '-', 100, '-', 50, '-', 100,'.log'))
+        tab <- readLines(con=paste0(arg[4], '/fusions-', i,'-', x, '-', j,'-', r, '-', 100, '-', 50, '-', 100,'.log'))
         sw <- startsWith(tab, 'GF')
         ss <- strsplit(tab[sw], ' ')
         ss <- vapply(ss, function(x) x[1], character(1))
@@ -321,7 +307,7 @@ fusel <- lapply(coverage, function(i) {
     res2 <- lapply(tech, function(j) {
       res3 <- lapply(1:replicates, function(r) {
         #res4 <- lapply(one, function(n) {
-  tab <- readLines(con=paste0('/home/vantwisk/vantwisk/fusions/longread-fusion-transcript-pipeline/longreads_training1k_longgf/fusions-', i,'-', x, '-', j, '-', r,'-', 100 ,'-', 50,'-', 100,'.log'))
+  tab <- readLines(con=paste0(arg[5], '/fusions-', i,'-', x, '-', j, '-', r,'-', 100 ,'-', 50,'-', 100,'.log'))
   sw <- startsWith(tab, 'GF')
   ss <- strsplit(tab[sw], ' ')
   ss <- vapply(ss, function(x) x[1], character(1))
@@ -955,3 +941,5 @@ ggplot(df, aes(x = coverage, y = precision, color = tool, group=tool)) +
   geom_errorbar(aes(ymin=precision-precision_sd, ymax=precision+precision_sd), width=2,
                 position=position_dodge(0.05)) +
   ggtitle("Longread and Short read tools coverage and precision")
+
+}

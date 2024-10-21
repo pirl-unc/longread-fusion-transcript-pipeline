@@ -10,6 +10,11 @@ library(Biostrings)
 
 arg <- commandArgs(trailingOnly=TRUE)
 
+arg[1] <- '/home/vantwisk/vantwisk/fusions/seq_run2/ref/gencode.v38.annotation.gtf'
+arg[2] <- '/home/vantwisk/vantwisk/fusions/seq_run2/ref/gencode.v38.transcripts.fa'
+arg[3] <- '/home/vantwisk/vantwisk/fusions/seq_run2/ref/Homo_sapiens_transcriptome_limited_1000.fa'
+arg[4] <- 1000
+
 message(arg[1])
 message(arg[2])
 message(arg[3])
@@ -44,6 +49,7 @@ vals1 <- ele[ele$full_tx %in% tx1,]
 wh1 <- which(tx_act %in% ele$full_tx)
 fa1 <- fa[wh1]
 fa1 <- fa1[lengths(fa1) > 100]
+
 fa1 <- sample(fa1, arg[4], replace=F)
 
 writeXStringSet(fa1, fasta_out)

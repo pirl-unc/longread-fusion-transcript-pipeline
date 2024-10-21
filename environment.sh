@@ -1,12 +1,12 @@
 
 ## SYSTEM OPTIONS
-export TF_BASH=bash
+export TF_BASH=sbatch
 #export TF_BASH=sbatch
 
 export THREADS=32
 
 ## SCRATCH STORAGE DIRECTORY
-export STORAGE_DIR=/home/vantwisk/vantwisk/fusions/seq_run
+export STORAGE_DIR=/home/vantwisk/vantwisk/fusions/seq_run3
 [ ! -d ${STORAGE_DIR} ] && mkdir ${STORAGE_DIR}
 
 ## BASE STORAGE DIRECTORIES
@@ -20,6 +20,9 @@ export RESULTS_STORAGE_DIR=${STORAGE_DIR}/results
 ## ALIGNMENT STORAGE DIRECTORY
 export ALIGNMENT_STORAGE_DIR=${STORAGE_DIR}/alignments
 [ ! -d ${ALIGNMENT_STORAGE_DIR} ] && mkdir ${ALIGNMENT_STORAGE_DIR}
+
+
+export STAR_INDEX_STORAGE_DIR=${REF_STORAGE_DIR}/hg38_star_index
 
 ## RESULTS STORAGE DIRECTORIES
 export JAFFAL_STORAGE_DIR=${RESULTS_STORAGE_DIR}/jaffal
@@ -43,9 +46,17 @@ export GRAPHS_STORAGE_DIR=${RESULTS_STORAGE_DIR}/graphs
 [ ! -d ${GRAPHS_STORAGE_DIR} ] && mkdir ${GRAPHS_STORAGE_DIR}
 
 ## RESOURCES
-export DNA_REFERENCE=${REF_STORAGE_DIR}/Homo_sapiens.GRCh38.dna.primary_assembly.fa
-export CDNA_REFERENCE=${REF_STORAGE_DIR}/Homo_sapiens.GRCh38.cdna.all.fa
-export GTF_REFERENCE=${REF_STORAGE_DIR}/Homo_sapiens.GRCh38.105.gtf
+export DNA_REFERENCE_GEN=${REF_STORAGE_DIR}/GRCh38.primary_assembly.genome.fa
+export CDNA_REFERENCE_GEN=${REF_STORAGE_DIR}/gencode.v38.transcripts.fa
+export GTF_REFERENCE_GEN=${REF_STORAGE_DIR}/gencode.v38.annotation.gtf
+
+export DNA_REFERENCE=${REF_STORAGE_DIR}/GRCh38.primary_assembly.genome.fa
+export CDNA_REFERENCE=${REF_STORAGE_DIR}/gencode.v38.transcripts.fa
+export GTF_REFERENCE=${REF_STORAGE_DIR}/gencode.v38.annotation.gtf
+
+export DNA_REFERENCE_ENS=${REF_STORAGE_DIR}/Homo_sapiens.GRCh38.dna.primary_assembly.fa
+export CDNA_REFERENCE_ENS=${REF_STORAGE_DIR}/Homo_sapiens.GRCh38.cdna.all.fa
+export GTF_REFERENCE_ENS=${REF_STORAGE_DIR}/Homo_sapiens.GRCh38.105.gtf
 
 export PBMM2_MMI=${REF_STORAGE_DIR}/hg38_gencode.mmi
 
@@ -55,13 +66,14 @@ export GENOMIC_SUPER_DUPS=${REF_STORAGE_DIR}/genomicSuperDups.txt
 
 ## Annotion Limit Settings
 export TRANSCRIPT_LIMIT=1000
-export TRANSCRIPT_LIMITED_FILE=${REF_STORAGE_DIR}/Homo_sapiens.GRCh38.cdna.limited_${TRANSCRIPT_LIMIT}.fa
+export TRANSCRIPT_LIMITED_FILE=${REF_STORAGE_DIR}/Homo_sapiens_transcriptome_limited_${TRANSCRIPT_LIMIT}.fa
 
 ## FUSION SIMULATION SETTINGS
 export NFUSIONS=100
 export FUSIM_FASTA_FILE=${REF_STORAGE_DIR}/fusim_${NFUSIONS}.fasta
-export FUSIM_TXT_FILE=${REF_STORAGE_DIR}/fusim_${NFUSIONS}.fxt
-export FUSION_TRANSCRIPTOME=${REF_STORAGE_DIR}/Homo_sapiens.GRCh38.cdna.limited_${TRANSCRIPT_LIMIT}_fusions_${NFUSIONS}.fa
+export FUSIM_TXT_FILE=${REF_STORAGE_DIR}/fusim_${NFUSIONS}.txt
+export FUSIM_REF_FILE=${REF_STORAGE_DIR}/fusim_ref_${NFUSIONS}.txt
+export FUSION_TRANSCRIPTOME=${REF_STORAGE_DIR}/Homo_sapiens.GRCh38.cdna.limited_${TRANSCRIPT_LIMIT}_fusions_${NFUSIONS}_2.fa
 
 ## LONGREAD AND SHORTREAD READ SIMULATION SETTINGS
 export N_TRANSCRIPTS=('1') #('1' '2' '4' '8' '16')

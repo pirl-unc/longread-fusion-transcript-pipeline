@@ -1,20 +1,27 @@
 #!/bin/bash
-#SBATCH --job-name longgf
+#SBATCH --job-name fusionseeker
 #SBATCH --partition allnodes
 #SBATCH --time UNLIMITED
 #SBATCH --cpus-per-task 1
 #SBATCH --mem-per-cpu 10g
 
-DATADIR_MINIMAP=/datastore/scratch/users/vantwisk/sim/longreads_training${12}k_minimap2
-FUSIONSEEKER_DIR=/datastore/scratch/users/vantwisk/sim/longreads_training${12}k_fusionseeker
+DATADIR_MINIMAP=${ALIGNMENT_STORAGE_DIR}/longreads_${9}k_minimap2
+FUSIONSEEKER_DIR=${FUSIONSEEKER_STORAGE_DIR}/longreads_${9}k_fusionseeker
 
 [ ! -d ${FUSIONSEEKER_DIR} ] && mkdir ${FUSIONSEEKER_DIR}
 
-#singularity exec --pid --bind /datastore longgf_0.1.2--h05f6578_1.sif \
-fusionseeker \
-  --tread 16 \
+/home/vantwisk/FusionSeeker/fusionseeker \
+  --thread 32 \
   --bam ${DATADIR_MINIMAP}/fusions-${1}-${5}-${6}-${4}-sorted.bam \
-  --gtf Homo_sapiens.GRCh38.105.gtf \
-  --ref ../hg38.fa \
-  -o ${FUSIONSEEKER_DIR}/fusions-${1}-${5}-${6}-${4}-fusionseeker \
+  --datatype nanopore \
+  --human38 \
+  --outpath ${FUSIONSEEKER_DIR}/fusions-${1}-${5}-${6}-${4}-fusionseeker \
   -s 2
+
+#fusionseeker \
+#  --thread 16 \
+#  --bam ${DATADIR_MINIMAP}/fusions-${1}-${5}-${6}-${4}-sorted.bam \
+#  --gtf ${GTF_REFERENCE} \
+#  --ref ${DNA_REFERENCE} \
+#  -o ${FUSIONSEEKER_DIR}/fusions-${1}-${5}-${6}-${4}-fusionseeker \
+#  -s 2

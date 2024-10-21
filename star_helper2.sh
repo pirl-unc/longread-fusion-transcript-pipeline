@@ -12,8 +12,8 @@ MAPPING_DIR=${ALIGNMENT_STORAGE_DIR}/shortreads_${6}k_star
 
 /home/vantwisk/STAR-2.7.10a/bin/Linux_x86_64_static/STAR \
     --runThreadN ${THREADS} \
-    --genomeDir ../hg38_star_index --genomeLoad NoSharedMemory \
-    --readFilesIn ${DATADIR}/fusions-${1}-${4}-${5}-1.fq ${DATADIR}/fusions-${1}-${4}-${5}-2.fq \
+    --genomeDir ${STAR_INDEX_STORAGE_DIR} --genomeLoad NoSharedMemory \
+    --readFilesIn ${DATADIR}/fusions-${1}-${4}-${5}-1.fq.gz ${DATADIR}/fusions-${1}-${4}-${5}-2.fq.gz \
     --outFileNamePrefix ${MAPPING_DIR}/fusions-${1}-${4}-${5}- \
     --readFilesCommand zcat \
     --outSAMtype BAM SortedByCoordinate --outSAMunmapped Within --outBAMcompression 0 \

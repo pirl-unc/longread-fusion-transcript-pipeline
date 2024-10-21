@@ -5,9 +5,9 @@
 #SBATCH --cpus-per-task 1
 #SBATCH --mem=128G
 
-DATADIR=${SIM_STORAGE_DIR}/longreads_${10}k
+DATADIR=${SIM_STORAGE_DIR}/longreads_${9}k
 DATADIR_MINIMAP=${ALIGNMENT_STORAGE_DIR}/longreads_${9}k_minimap2
-GENION_DIR=${GENION_STORAGE_DIR}/longreads_${10}k_genion
+GENION_DIR=${GENION_STORAGE_DIR}/longreads_${9}k_genion
 
 [ ! -d ${GENION_DIR} ] && mkdir ${GENION_DIR}
 
@@ -21,16 +21,16 @@ echo ${7}
 echo ${8}
 echo ${9}
 echo ${10}
-echo $DATADIR/fusions-$1-$5-$6-$4.fq.gz
+echo $DATADIR/fusions-$1-$5-$6-$4.fq
 echo $DATADIR_MINIMAP/fusions-${1}-${5}-${6}-${4}.paf
 echo $GENION_DIR/fusions-$1-$5-$6-$4-genion-minsup-${10}.tsv
 
 #singularity exec --pid --bind /datastore longgf_0.1.2--h05f6578_1.sif \
 genion \
-  -i $DATADIR/fusions-$1-$5-$6-$4.fq.gz \
-  --gtf $GTF_REFERENCE \
+  -i ${DATADIR}/fusions-${1}-${5}-${6}-${4}.fq \
+  --gtf ${GTF_REFERENCE_ENS} \
   --gpaf ${DATADIR_MINIMAP}/fusions-${1}-${5}-${6}-${4}.paf \
-  -s $REF_STORAGE_DIR/fusions-${1}-${5}-${6}-${4}.tsv \
-  -d $GENOMIC_SUPER_DUPS \
-  -o $GENION_DIR/fusions-$1-$5-$6-$4-genion-minsup-${10}.tsv \
+  -s ${REF_STORAGE_DIR}/genion-selfalign.tsv \
+  -d ${GENOMIC_SUPER_DUPS} \
+  -o ${GENION_DIR}/fusions-${1}-${5}-${6}-${4}-genion-minsup-${10}.tsv \
   --min-support ${10}
