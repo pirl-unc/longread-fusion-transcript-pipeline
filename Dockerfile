@@ -2,8 +2,8 @@
 FROM python:3.12-slim-bookworm
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
-COPY requirements.txt .
-RUN uv pip install -r requirements.txt
+#COPY requirements.txt .
+#RUN uv pip install -r requirements.txt
 
 #FROM ghcr.io/astral-sh/uv:0.2.12 AS builder
 
@@ -48,5 +48,5 @@ RUN uv pip install -r requirements.txt
 
 #FROM ubuntu:latest
 
-#CMD ["echo", "Hello, World!"]
+CMD ["echo", "Hello, World!"]
 
