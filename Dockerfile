@@ -1,3 +1,10 @@
+
+FROM python:3.12-slim-bookworm
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+
+COPY requirements.txt .
+RUN uv pip install -r requirements.txt
+
 #FROM ghcr.io/astral-sh/uv:0.2.12 AS builder
 
 #RUN wget -O fusim-0.2.2.zip https://github.com/aebruno/fusim/raw/master/releases/fusim-0.2.2-bin.zip \
@@ -39,7 +46,7 @@
 
 #CMD ["conda", "run", "-n", "env-a", "/bin/bash”]
 
-FROM alpine:latest
+#FROM ubuntu:latest
 
-CMD ["echo", "Hello, World!"]
+#CMD ["echo", "Hello, World!"]
 
