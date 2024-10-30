@@ -13,8 +13,13 @@
 #FROM quay.io/biocontainers/minimap2:2.28--he4a0461_2 AS Minimap2
 
 FROM mambaorg/micromamba:latest
-COPY requirements.txt .
-RUN micromamba create -f requiremnts.txt
+
+COPY --chown=$MAMBA_USER:$MAMBA_USER requirements.yml /tmp/requirements.yaml
+RUN micromamba install -y -n base -f /tmp/requirements.yaml && \
+    micromamba clean --all --yes
+
+#COPY requirements.txt .
+#RUN micromamba create -f requiremnts.txt
 
 
 #FROM ubuntu:22.04
