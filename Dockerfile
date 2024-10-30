@@ -12,7 +12,7 @@
 #FROM davidsongroup/jaffa:2.4 AS JAFFA
 #FROM quay.io/biocontainers/minimap2:2.28--he4a0461_2 AS Minimap2
 
-FROM mambaorg/micromamba:latest
+FROM mambaorg/micromamba:2.0.2
 
 COPY --chown=$MAMBA_USER:$MAMBA_USER requirements.txt /tmp/requirements.txt
 RUN micromamba install -y -n base -f /tmp/requirements.txt && \
