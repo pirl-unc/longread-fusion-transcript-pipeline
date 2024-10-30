@@ -14,8 +14,8 @@
 
 FROM mambaorg/micromamba:latest
 
-COPY --chown=$MAMBA_USER:$MAMBA_USER requirements.yml /tmp/requirements.yaml
-RUN micromamba install -y -n base -f /tmp/requirements.yaml && \
+COPY --chown=$MAMBA_USER:$MAMBA_USER requirements.txt /tmp/requirements.txt
+RUN micromamba install -y -n base -f /tmp/requirements.txt && \
     micromamba clean --all --yes
 
 #COPY requirements.txt .
