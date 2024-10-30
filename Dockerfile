@@ -6,8 +6,9 @@
 #RUN uv pip install -r requirements.txt
 
 FROM quay.io/biocontainers/pbmm2::0.4.1--hdfd78af_0 AS ONE_P2
-COPY --from=ONE_P2 /usr/local/bin/pbmm2 pbmm2
 
+FROM ubuntu:22.04
+COPY --from=ONE_P2 /usr/local/bin/pbmm2 pbmm2
 
 #FROM ghcr.io/astral-sh/uv:0.2.12 AS builder
 
