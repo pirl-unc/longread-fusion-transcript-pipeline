@@ -14,7 +14,7 @@
 
 FROM mambaorg/micromamba:latest
 COPY environment.yml .
-#RUN micromamba create -n long-fusion -f environment.yml
+RUN micromamba create -n long-fusion -f environment.yml
 
 
 #FROM ubuntu:22.04
