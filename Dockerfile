@@ -1,9 +1,13 @@
 
-FROM python:3.12-slim-bookworm
-COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+#FROM python:3.12-slim-bookworm
+#COPY --from=ghcr.io/astral-sh/uv:0.4.26 /uv /uvx /bin/
 
-COPY requirements.txt .
-RUN uv pip install -r requirements.txt
+#COPY requirements.txt .
+#RUN uv pip install -r requirements.txt
+
+FROM ubuntu:22.04
+COPY --from quay.io/biocontainers/pbmm2::0.4.1--hdfd78af_0 /bin/
+
 
 #FROM ghcr.io/astral-sh/uv:0.2.12 AS builder
 
