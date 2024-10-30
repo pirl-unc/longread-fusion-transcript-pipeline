@@ -8,7 +8,9 @@
 FROM quay.io/biocontainers/pbmm2:1.16.0--h9ee0642_0 AS ONE_P2
 
 FROM ubuntu:22.04
-COPY --from=ONE_P2 /usr/local/bin/pbmm2 /
+COPY --from=ONE_P2 /usr/local/bin/pbmm2 /bin/
+
+ENV PATH="$PATH:/bin"
 
 #FROM ghcr.io/astral-sh/uv:0.2.12 AS builder
 
