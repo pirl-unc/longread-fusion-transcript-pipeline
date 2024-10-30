@@ -13,8 +13,8 @@
 #FROM quay.io/biocontainers/minimap2:2.28--he4a0461_2 AS Minimap2
 
 FROM mambaorg/micromamba:latest
-COPY environment.yml .
-RUN micromamba create -n long-fusion -f environment.yml
+COPY requirements.txt .
+RUN micromamba create -f requiremnts.txt
 
 
 #FROM ubuntu:22.04
