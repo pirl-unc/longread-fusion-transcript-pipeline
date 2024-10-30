@@ -6,11 +6,21 @@
 #RUN uv pip install -r requirements.txt
 
 FROM quay.io/biocontainers/pbmm2:1.16.0--h9ee0642_0 AS ONE_P2
+FROM quay.io/biocontainers/pbfusion:0.3.1--hdfd78af_0 AS PBFusion
+FROM themariya/genion:latest AS Genion
+FROM trinityctat/longgf:latest AS LongGF
+FROM davidsongroup/jaffa:2.4 AS JAFFA
+FROM quay.io/biocontainers/minimap2:2.28--he4a0461_2 AS Minimap2
 
 FROM ubuntu:22.04
 COPY --from=ONE_P2 /usr/local/bin/pbmm2 /bin/
+COPY --from=PBFusion /usr/local/bin/pbfusion /bin/
+COPY --from=Genion /opt/conda/envs/env/bin//genion /bin/
+COPY --from=Minimap2 /usr/local/bin/minimap2 /bin/
+COPY --from=JAFFA /JAFFA /JAFFA
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
-ENV PATH="$PATH:/bin"
+ENV PATH="$PATH:/bin:/JAFFA/tools/bin:/JAFFA"
 
 #FROM ghcr.io/astral-sh/uv:0.2.12 AS builder
 
