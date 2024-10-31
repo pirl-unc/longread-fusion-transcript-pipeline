@@ -39,7 +39,7 @@ RUN apt-get update && \
     apt-get install -y openjdk-11-jre-headless && \
     apt-get clean;
 
-RUN apt-get install -y R-core R-devel && \
+RUN apt-get install -y R-core && \
     apt-get clean;
 
 
