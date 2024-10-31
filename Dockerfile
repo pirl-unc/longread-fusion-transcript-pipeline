@@ -27,7 +27,7 @@
 #RUN micromamba create -f requiremnts.txt
 
 
-#FROM ubuntu:22.04
+FROM ubuntu:22.04
 #COPY --from=ONE_P2 /usr/local/bin/pbmm2 /bin/
 #COPY --from=PBFusion /usr/local/bin/pbfusion /bin/
 #COPY --from=Genion /opt/conda/envs/env/bin//genion /bin/
@@ -35,7 +35,6 @@
 #COPY --from=JAFFA /JAFFA /JAFFA
 #COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
-Install OpenJDK-11
 RUN apt-get update && \
     apt-get install -y openjdk-11-jre-headless && \
     apt-get clean;
