@@ -36,12 +36,8 @@ FROM ubuntu:22.04
 #COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
 RUN apt-get update && \
-    apt-get install -y openjdk-11-jre-headless && \
+    apt-get install -y openjdk-11-jre-headless r-base && \
     apt-get clean;
-
-RUN apt-get install -y R-core && \
-    apt-get clean;
-
 
 ENV PATH="$PATH:/bin:/JAFFA/tools/bin:/JAFFA"
 
