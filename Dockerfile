@@ -7,16 +7,21 @@
 
 #FROM quay.io/biocontainers/pbmm2:1.16.0--h9ee0642_0 AS ONE_P2
 #FROM quay.io/biocontainers/pbfusion:0.3.1--hdfd78af_0 AS PBFusion
-#FROM themariya/genion:latest AS Genion
-#FROM trinityctat/longgf:latest AS LongGF
+#FROM quay.io/biocontainers/longgf:0.1.2--h4ac6f70_7 AS LongGF
 #FROM davidsongroup/jaffa:2.4 AS JAFFA
 #FROM quay.io/biocontainers/minimap2:2.28--he4a0461_2 AS Minimap2
+#FROM quay.io/biocontainers/arriba:2.4.0--hdbdd923_4 AS Arriba
+#FROM quay.io/biocontainers/star:2.7.11b--h43eeafb_2 AS Star
+#FROM quay.io/biocontainers/genion:1.2.3--hdcf5f25_1 AS Genion
+#FROM quay.io/biocontainers/star-fusion:1.10.0--hdfd78af_1 AS Starfusion
+#FROM staphb/samtools:1.9 AS Samtools
+#FROM r-base:4.4.0 AS Rbase
 
-FROM mambaorg/micromamba:2.0.2
+#FROM mambaorg/micromamba:2.0.2
 
-COPY --chown=$MAMBA_USER:$MAMBA_USER requirements.txt /tmp/requirements.txt
-RUN micromamba install -y -n base -f /tmp/requirements.txt && \
-    micromamba clean --all --yes
+#COPY --chown=$MAMBA_USER:$MAMBA_USER requirements.txt /tmp/requirements.txt
+#RUN micromamba install -y -n base -f /tmp/requirements.txt && \
+#    micromamba clean --all --yes
 
 #COPY requirements.txt .
 #RUN micromamba create -f requiremnts.txt
@@ -28,8 +33,12 @@ RUN micromamba install -y -n base -f /tmp/requirements.txt && \
 #COPY --from=Genion /opt/conda/envs/env/bin//genion /bin/
 #COPY --from=Minimap2 /usr/local/bin/minimap2 /bin/
 #COPY --from=JAFFA /JAFFA /JAFFA
-COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+#COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
+Install OpenJDK-11
+RUN apt-get update && \
+    apt-get install -y openjdk-11-jre-headless && \
+    apt-get clean;
 
 
 ENV PATH="$PATH:/bin:/JAFFA/tools/bin:/JAFFA"
