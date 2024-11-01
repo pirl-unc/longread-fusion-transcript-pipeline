@@ -40,8 +40,8 @@ RUN apt-get update && \
     apt-get install -y openjdk-11-jre-headless wget unzip && \
     apt-get clean;
 
-RUN wget https://github.com/aebruno/fusim/raw/master/releases/fusim-0.2.2-bin.zip
-RUN unzip fusim-0.2.2.zip
+RUN wget -O /fusim-0.2.2-bin.zip https://github.com/aebruno/fusim/raw/master/releases/fusim-0.2.2-bin.zip
+RUN unzip /fusim-0.2.2.zip
 
 ENV PATH="$PATH:/bin:/JAFFA/tools/bin:/JAFFA:/fusim-0.2.2"
 
