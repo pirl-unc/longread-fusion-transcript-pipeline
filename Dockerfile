@@ -29,7 +29,7 @@
 
 FROM ubuntu:22.04 AS Fusim
 RUN apt-get update && \
-    apt-get install -y wget unzip && \
+    apt-get install -y wget unzip;
 
 RUN mkdir /opt/ && \
     cd /opt/ && \
