@@ -28,9 +28,11 @@
 
 
 FROM ubuntu:22.04 AS Fusim
-RUN apt-get install -y wget unzip;
-RUN mkdir /opt/ ; \
-  wget https://github.com/aebruno/fusim/raw/master/releases/fusim-0.2.2-bin.zip | unzip
+RUN apt-get update && \
+    apt-get install -y wget unzip && \
+    mkdir /opt/ && \
+    cd /opt/ && \
+    wget https://github.com/aebruno/fusim/raw/master/releases/fusim-0.2.2-bin.zip | unzip
 
 FROM ubuntu:22.04
 #COPY --from=ONE_P2 /usr/local/bin/pbmm2 /bin/
