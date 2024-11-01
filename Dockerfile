@@ -34,7 +34,8 @@ WORKDIR /opt
 RUN apt-get update && \
     apt-get install -y wget unzip
 
-RUN wget https://github.com/aebruno/fusim/raw/master/releases/fusim-0.2.2-bin.zip
+RUN wget https://github.com/aebruno/fusim/raw/master/releases/fusim-0.2.2-bin.zip && \
+    unzip fusim-0.2.2-bin.zip
 
 FROM ubuntu:22.04
 #COPY --from=ONE_P2 /usr/local/bin/pbmm2 /bin/
