@@ -34,12 +34,16 @@ FROM ubuntu:22.04
 #COPY --from=Minimap2 /usr/local/bin/minimap2 /bin/
 #COPY --from=JAFFA /JAFFA /JAFFA
 #COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+#COPY --from=Rbase /usr/bin /bin/
 
 RUN apt-get update && \
-    apt-get install -y openjdk-11-jre-headless r-base && \
+    apt-get install -y openjdk-11-jre-headless && \
     apt-get clean;
 
-ENV PATH="$PATH:/bin:/JAFFA/tools/bin:/JAFFA"
+RUN wget https://github.com/aebruno/fusim/raw/master/releases/fusim-0.2.2-bin.zip && \
+    unzip fusim-0.2.2.zip;
+
+ENV PATH="$PATH:/bin:/JAFFA/tools/bin:/JAFFA:/fusim-0.2.2"
 
 #FROM ghcr.io/astral-sh/uv:0.2.12 AS builder
 
