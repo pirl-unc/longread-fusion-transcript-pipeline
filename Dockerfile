@@ -30,7 +30,8 @@
 FROM ubuntu:22.04 AS Fusim
 RUN apt-get update && \
     apt-get install -y wget unzip && \
-    mkdir /opt/ && \
+
+RUN mkdir /opt/ && \
     cd /opt/ && \
     wget https://github.com/aebruno/fusim/raw/master/releases/fusim-0.2.2-bin.zip | unzip
 
