@@ -33,7 +33,7 @@ RUN apt-get update && \
 
 RUN mkdir /opt/ && \
     cd /opt/ && \
-    wget https://github.com/aebruno/fusim/raw/master/releases/fusim-0.2.2-bin.zip | unzip
+    wget https://github.com/aebruno/fusim/raw/master/releases/fusim-0.2.2-bin.zip;
 
 FROM ubuntu:22.04
 #COPY --from=ONE_P2 /usr/local/bin/pbmm2 /bin/
