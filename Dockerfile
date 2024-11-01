@@ -27,6 +27,11 @@
 #RUN micromamba create -f requiremnts.txt
 
 
+FROM ubuntu:22.04 AS Fusim
+RUN apt-get install -y openjdk-11-jre-headless wget unzip
+RUN mkdir /opt/ ; \
+  wget https://github.com/aebruno/fusim/raw/master/releases/fusim-0.2.2-bin.zip | unzip
+
 FROM ubuntu:22.04
 #COPY --from=ONE_P2 /usr/local/bin/pbmm2 /bin/
 #COPY --from=PBFusion /usr/local/bin/pbfusion /bin/
@@ -35,13 +40,11 @@ FROM ubuntu:22.04
 #COPY --from=JAFFA /JAFFA /JAFFA
 #COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 #COPY --from=Rbase /usr/bin /bin/
+COPY --from=Fusim /opt/ /bin/
 
 RUN apt-get update && \
     apt-get install -y openjdk-11-jre-headless wget unzip && \
     apt-get clean;
-
-RUN wget -O /fusim-0.2.2-bin.zip https://github.com/aebruno/fusim/raw/master/releases/fusim-0.2.2-bin.zip
-RUN unzip /fusim-0.2.2.zip
 
 ENV PATH="$PATH:/bin:/JAFFA/tools/bin:/JAFFA:/fusim-0.2.2"
 
