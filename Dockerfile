@@ -37,11 +37,11 @@ FROM ubuntu:22.04
 #COPY --from=Rbase /usr/bin /bin/
 
 RUN apt-get update && \
-    apt-get install -y openjdk-11-jre-headless wget unzip && \
+    apt-get install -y wget unzip && \ #openjdk-11-jre-headless wget unzip && \
     apt-get clean;
 
-RUN wget https://github.com/aebruno/fusim/raw/master/releases/fusim-0.2.2-bin.zip && \
-    unzip fusim-0.2.2.zip;
+#RUN wget https://github.com/aebruno/fusim/raw/master/releases/fusim-0.2.2-bin.zip && \
+#    unzip fusim-0.2.2.zip;
 
 ENV PATH="$PATH:/bin:/JAFFA/tools/bin:/JAFFA:/fusim-0.2.2"
 
