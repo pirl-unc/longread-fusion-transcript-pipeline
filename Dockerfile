@@ -40,8 +40,10 @@ RUN wget https://www.niehs.nih.gov/sites/default/files/2024-02/artbinmountrainie
     tar xvzf artbinmountrainier2016.06.05linux64.tgz
 
 FROM mambaorg/micromamba:2.0.2
+COPY --chown=$MAMBA_USER:$MAMBA_USER environment.yaml /tmp/environment.yaml
 
-#COPY --chown=$MAMBA_USER:$MAMBA_USER env.yaml /tmp/env.yaml
+RUN micromamba install --yes --file /tmp/env.yaml && \
+    micromamba clean --all --yes
 
 #FROM ubuntu:22.04
 #COPY --from=Pbmm2 /usr/local/bin/pbmm2 /bin/
