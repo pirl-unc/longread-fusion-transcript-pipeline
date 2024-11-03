@@ -60,6 +60,7 @@ RUN micromamba install -y -n base -f /tmp/env.yaml && \
 #    apt-get install -y openjdk-11-jre-headless wget && \
 #    apt-get clean;
 
+USER root
 RUN apt-get install make
 
 RUN /opt/conda/bin/Rscript -e "install.packages('BiocManager', dependencies=TRUE, repos='http://cran.rstudio.com/')" && \
