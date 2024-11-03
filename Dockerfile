@@ -60,8 +60,8 @@ RUN micromamba install -y -n base -f /tmp/env.yaml && \
 #    apt-get install -y openjdk-11-jre-headless wget && \
 #    apt-get clean;
 
-RUN R -e "install.packages('BiocManager',dependencies=TRUE, repos='http://cran.rstudio.com/')" && \
-    R -e "BiocManager::install(c('GenomicFeatures', 'Biostrings', 'biomaRt', 'rtracklayer', 'stringr', 'ggplot2', 'patchwork', 'cowplot'),dependencies=TRUE')"
+RUN R -e "install.packages('BiocManager',dependencies=TRUE, repos='http://cran.rstudio.com/')"
+#    R -e "BiocManager::install(c('GenomicFeatures', 'Biostrings', 'biomaRt', 'rtracklayer', 'stringr', 'ggplot2', 'patchwork', 'cowplot'),dependencies=TRUE')"
 
 ENV PATH="$PATH:/bin:/JAFFA/tools/bin:/JAFFA:/opt/fusim-0.2.2"
 
