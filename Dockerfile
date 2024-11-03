@@ -62,8 +62,6 @@ COPY --from=Fusim /opt/ /bin/
 
 COPY --from=Micromamba /usr/bin /bin/
 
-RUN apt-get install make
-
 RUN Rscript -e "install.packages('BiocManager', dependencies=TRUE, repos='http://cran.rstudio.com/')" && \
     Rscript -e "BiocManager::install(c('GenomicFeatures', 'Biostrings', 'biomaRt', 'rtracklayer', 'stringr', 'ggplot2', 'patchwork', 'cowplot'),dependencies=TRUE')"
 
