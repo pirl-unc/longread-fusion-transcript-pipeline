@@ -42,8 +42,8 @@ RUN wget https://www.niehs.nih.gov/sites/default/files/2024-02/artbinmountrainie
 FROM mambaorg/micromamba:2.0.2
 COPY environment.yml .
 
-RUN micromamba install --yes -c bioconda rustyread
-
+RUN micromamba install -y -n base -f environment.yml && \
+    micromamba clean --all --yes
 
 #--file environment.yml
 
