@@ -40,7 +40,7 @@ RUN wget https://www.niehs.nih.gov/sites/default/files/2024-02/artbinmountrainie
     tar xvzf artbinmountrainier2016.06.05linux64.tgz
 
 FROM mambaorg/micromamba:2.0.2
-COPY --chown=$MAMBA_USER:$MAMBA_USER environment.yml .
+COPY environment.yml .
 
 RUN micromamba install --yes -c bioconda rustyread
 
