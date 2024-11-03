@@ -60,9 +60,7 @@ RUN micromamba install -y -n base -f /tmp/env.yaml && \
 #    apt-get install -y openjdk-11-jre-headless wget && \
 #    apt-get clean;
 
-RUN apt update
-RUN apt-get install -y curl
-RUN apt-get -y install libcurl4-openssl-dev
+RUN apt-get install -y curl install libcurl4-openssl-dev
 
 RUN R -e "install.packages('BiocManager')"
 RUN R -e "BiocManager::install('DECIPHER')"
