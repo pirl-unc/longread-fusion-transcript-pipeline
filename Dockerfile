@@ -42,7 +42,10 @@ RUN wget https://www.niehs.nih.gov/sites/default/files/2024-02/artbinmountrainie
 FROM mambaorg/micromamba:2.0.2
 COPY --chown=$MAMBA_USER:$MAMBA_USER environment.yml .
 
-RUN micromamba install --yes --file environment.yml
+RUN micromamba install --yes -c bioconda rustyread
+
+
+#--file environment.yml
 
 #FROM ubuntu:22.04
 #COPY --from=Pbmm2 /usr/local/bin/pbmm2 /bin/
