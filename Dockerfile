@@ -39,7 +39,7 @@ RUN wget https://github.com/aebruno/fusim/raw/master/releases/fusim-0.2.2-bin.zi
 RUN wget https://www.niehs.nih.gov/sites/default/files/2024-02/artbinmountrainier2016.06.05linux64.tgz && \
     tar xvzf artbinmountrainier2016.06.05linux64.tgz
 
-FROM mambaorg/micromamba:2.0.2
+FROM mambaorg/micromamba:2.0.2 AS Micromamba
 COPY --chown=$MAMBA_USER:$MAMBA_USER env.yaml /tmp/env.yaml
 
 RUN micromamba install -y -n base -f /tmp/env.yaml && \
@@ -47,23 +47,24 @@ RUN micromamba install -y -n base -f /tmp/env.yaml && \
 
 #--file environment.yml
 
-#FROM ubuntu:22.04
+FROM ubuntu:22.04
 #COPY --from=Pbmm2 /usr/local/bin/pbmm2 /bin/
 #COPY --from=PBFusion /usr/local/bin/pbfusion /bin/
 #COPY --from=Genion /opt/conda/envs/env/bin//genion /bin/
 #COPY --from=Minimap2 /usr/local/bin/minimap2 /bin/
 #COPY --from=JAFFA /JAFFA /JAFFA
 #COPY --from=Rbase /usr/bin /bin/
-#COPY --from=Fusim /opt/ /bin/
+COPY --from=Fusim /opt/ /bin/
 
 #RUN apt-get update && \
 #    apt-get install -y openjdk-11-jre-headless wget && \
 #    apt-get clean;
 
-USER root
+COPY --from=Micromamba /usr/bin /bin/
+
 RUN apt-get install make
 
-RUN /opt/conda/bin/Rscript -e "install.packages('BiocManager', dependencies=TRUE, repos='http://cran.rstudio.com/')" && \
+RUN Rscript -e "install.packages('BiocManager', dependencies=TRUE, repos='http://cran.rstudio.com/')" && \
     Rscript -e "BiocManager::install(c('GenomicFeatures', 'Biostrings', 'biomaRt', 'rtracklayer', 'stringr', 'ggplot2', 'patchwork', 'cowplot'),dependencies=TRUE')"
 
 ENV PATH="$PATH:/bin:/JAFFA/tools/bin:/JAFFA:/opt/fusim-0.2.2"
