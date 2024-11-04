@@ -66,7 +66,7 @@ FROM ubuntu:22.04
 #    apt-get install -y openjdk-11-jre-headless wget && \
 #    apt-get clean;
 
-COPY --from=Micromamba /usr/bin/ /bin/
+#COPY --from=Micromamba /usr/bin/ /bin/
 COPY --from=Rbase /usr/local/bin/ /bin/
 COPY --from=Rbase /usr/local/lib/R/site-library /usr/local/lib/R/site-library
 COPY --from=Rbase /usr/local/lib/R/library /usr/local/lib/R/library
