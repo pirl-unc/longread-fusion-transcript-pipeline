@@ -1,10 +1,4 @@
 
-#FROM python:3.12-slim-bookworm
-#COPY --from=ghcr.io/astral-sh/uv:0.4.26 /uv /uvx /bin/
-
-#COPY requirements.txt .
-#RUN uv pip install -r requirements.txt
-
 #FROM quay.io/biocontainers/pbmm2:1.16.0--h9ee0642_0 AS Pbmm2
 #FROM quay.io/biocontainers/pbfusion:0.3.1--hdfd78af_0 AS PBFusion
 #FROM quay.io/biocontainers/longgf:0.1.2--h4ac6f70_7 AS LongGF
@@ -15,15 +9,6 @@ FROM davidsongroup/jaffa:2.4 AS JAFFA
 #FROM quay.io/biocontainers/genion:1.2.3--hdcf5f25_1 AS Genion
 #FROM quay.io/biocontainers/star-fusion:1.10.0--hdfd78af_1 AS Starfusion
 #FROM staphb/samtools:1.9 AS Samtools
-
-#FROM mambaorg/micromamba:2.0.2
-
-#COPY --chown=$MAMBA_USER:$MAMBA_USER requirements.txt /tmp/requirements.txt
-#RUN micromamba install -y -n base -f /tmp/requirements.txt && \
-#    micromamba clean --all --yes
-
-#COPY requirements.txt .
-#RUN micromamba create -f requiremnts.txt
 
 FROM ubuntu:22.04 AS Fusim
 
@@ -39,13 +24,6 @@ RUN wget https://www.niehs.nih.gov/sites/default/files/2024-02/artbinmountrainie
     tar xvzf artbinmountrainier2016.06.05linux64.tgz
 
 RUN git clone https://github.com/Maggi-Chen/FusionSeeker.git
-
-#FROM rocker/r-ver:4.4.0 AS Rbase
-
-#RUN R -q -e 'install.packages("curl")'
-#RUN Rscript -e "install.packages('BiocManager', dependencies=TRUE, repos='http://cran.rstudio.com/')"
-#    Rscript -e "BiocManager::install(c('GenomicFeatures', 'Biostrings', 'biomaRt', 'rtracklayer', 'stringr', 'ggplot2', 'patchwork', 'cowplot'))"
-#    Rscript -e "BiocManager::install(c('GenomicFeatures', 'Biostrings', 'biomaRt', 'rtracklayer', 'stringr', 'ggplot2', 'patchwork', 'cowplot'),dependencies=TRUE')"
 
 FROM mambaorg/micromamba:2.0.2 AS Micromamba
 COPY --chown=$MAMBA_USER:$MAMBA_USER env.yaml /tmp/env.yaml
@@ -83,27 +61,17 @@ ENV DEBIAN_FRONTEND=noninteractive
 #RUN apt-get clean autoremove --yes
 #RUN rm -rf /var/lib/{apt,dpkg,cache,log}
 
-USER root
-RUN apt update && \
-    apt install -y libcurl4-openssl-dev libssl-dev libxml2-dev liblzma-dev r-base curl wget && \
-    apt clean;
+#USER root
+#RUN apt update && \
+#    apt install -y libcurl4-openssl-dev libssl-dev libxml2-dev liblzma-dev r-base curl wget && \
+#    apt clean;
 
-RUN R -q -e "install.packages(c('curl'))" && \
-    Rscript -e "install.packages('BiocManager', dependencies=TRUE, repos='http://cran.rstudio.com/')" && \
-    Rscript -e "BiocManager::install(c('GenomicFeatures', 'Biostrings', 'biomaRt', 'rtracklayer', 'stringr', 'ggplot2', 'patchwork', 'cowplot'))"
-
-#COPY --from=Micromamba /usr/bin/ /bin/
-#COPY --from=Rbase /usr/local/bin/ /bin/
-
-#COPY --from=Rbase /usr/local/lib/R/etc/ldpaths /usr/local/lib/R/etc/ldpaths
-#COPY --from=Rbase /usr/local/lib/R/bin/exec/R /usr/local/lib/R/bin/exec/R
-#COPY --from=Rbase /usr/local/lib/R/site-library /usr/local/lib/R/site-library
-#COPY --from=Rbase /usr/local/lib/R/library /usr/local/lib/R/library
-
-#COPY --from=Micromamba /opt/conda/bin/ /bin/
+#RUN R -q -e "install.packages(c('curl'))" && \
+#    Rscript -e "install.packages('BiocManager', dependencies=TRUE, repos='http://cran.rstudio.com/')" && \
+#    Rscript -e "BiocManager::install(c('GenomicFeatures', 'Biostrings', 'biomaRt', 'rtracklayer', 'stringr', 'ggplot2', 'patchwork', 'cowplot'))"
 
 ENV PATH="$PATH:/bin:/JAFFA/tools/bin:/JAFFA:/bin/fusim-0.2.2:/bin/Fusionseeker"
 
-COPY ./src ./src
+COPY ./src /src
 
-ENTRYPOINT ["bash", "./src/sequential_run.sh"]
+ENTRYPOINT ["bash", "/src/sequential_run.sh"]
