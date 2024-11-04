@@ -38,7 +38,7 @@ RUN wget https://github.com/aebruno/fusim/raw/master/releases/fusim-0.2.2-bin.zi
 RUN wget https://www.niehs.nih.gov/sites/default/files/2024-02/artbinmountrainier2016.06.05linux64.tgz && \
     tar xvzf artbinmountrainier2016.06.05linux64.tgz
 
-FROM rocker/r-ver:4.4.0
+FROM rocker/r-ver:4.4.0 AS Rbase
 
 RUN R -q -e 'install.packages("curl")'
 RUN Rscript -e "install.packages('BiocManager', dependencies=TRUE, repos='http://cran.rstudio.com/')" && \
@@ -53,7 +53,7 @@ RUN Rscript -e "install.packages('BiocManager', dependencies=TRUE, repos='http:/
 
 #--file environment.yml
 
-#FROM ubuntu:22.04
+FROM ubuntu:22.04
 #COPY --from=Pbmm2 /usr/local/bin/pbmm2 /bin/
 #COPY --from=PBFusion /usr/local/bin/pbfusion /bin/
 #COPY --from=Genion /opt/conda/envs/env/bin//genion /bin/
@@ -66,7 +66,11 @@ RUN Rscript -e "install.packages('BiocManager', dependencies=TRUE, repos='http:/
 #    apt-get install -y openjdk-11-jre-headless wget && \
 #    apt-get clean;
 
-#COPY --from=Micromamba /usr/bin/ /bin/
+COPY --from=Micromamba /usr/bin/ /bin/
+COPY --from=Rbase /usr/local/bin/ /bin/
+COPY --from=Rbase /usr/local/lib/R/site-library /usr/local/lib/R/site-library
+COPY --from=Rbase /usr/local/lib/R/library /usr/local/lib/R/library
+
 #COPY --from=Micromamba /opt/conda/bin/ /bin/
 
 #ENV PATH="$PATH:/bin:/JAFFA/tools/bin:/JAFFA:/opt/fusim-0.2.2"
