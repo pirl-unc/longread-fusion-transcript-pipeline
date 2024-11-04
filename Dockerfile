@@ -45,15 +45,15 @@ RUN wget https://www.niehs.nih.gov/sites/default/files/2024-02/artbinmountrainie
 #    Rscript -e "BiocManager::install(c('GenomicFeatures', 'Biostrings', 'biomaRt', 'rtracklayer', 'stringr', 'ggplot2', 'patchwork', 'cowplot'))"
 #    Rscript -e "BiocManager::install(c('GenomicFeatures', 'Biostrings', 'biomaRt', 'rtracklayer', 'stringr', 'ggplot2', 'patchwork', 'cowplot'),dependencies=TRUE')"
 
-#FROM mambaorg/micromamba:2.0.2 AS Micromamba
-#COPY --chown=$MAMBA_USER:$MAMBA_USER env.yaml /tmp/env.yaml
+FROM mambaorg/micromamba:2.0.2 AS Micromamba
+COPY --chown=$MAMBA_USER:$MAMBA_USER env.yaml /tmp/env.yaml
 
 #RUN micromamba install -y -n base -f /tmp/env.yaml && \
 #    micromamba clean --all --yes
 
 #--file environment.yml
 
-FROM ubuntu:24.04
+#FROM ubuntu:24.04
 #COPY --from=Pbmm2 /usr/local/bin/pbmm2 /bin/
 #COPY --from=PBFusion /usr/local/bin/pbfusion /bin/
 #COPY --from=Genion /opt/conda/envs/env/bin//genion /bin/
@@ -68,17 +68,18 @@ FROM ubuntu:24.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN apt-get update && apt-get install -y wget bzip2 && \
-    wget -qO-  https://micromamba.snakepit.net/api/micromamba/linux-64/latest | tar -xvj bin/micromamba
-RUN touch /root/.bashrc
-RUN ./bin/micromamba shell init -s bash -p /opt/conda
-RUN grep -v '[ -z "\$PS1" ] && return' /root/.bashrc  > /opt/conda/bashrc
-RUN apt-get clean autoremove --yes
-RUN rm -rf /var/lib/{apt,dpkg,cache,log}
+#RUN apt-get update && apt-get install -y wget bzip2 && \
+#    wget -qO-  https://micromamba.snakepit.net/api/micromamba/linux-64/latest | tar -xvj bin/micromamba
+#RUN touch /root/.bashrc
+#RUN ./bin/micromamba shell init -s bash -p /opt/conda
+#RUN grep -v '[ -z "\$PS1" ] && return' /root/.bashrc  > /opt/conda/bashrc
+#RUN apt-get clean autoremove --yes
+#RUN rm -rf /var/lib/{apt,dpkg,cache,log}
 
-RUN apt-get update && apt-get install -y r-base- curl
+USER root
+RUN apt update && apt install -y r-base curl
 
-#RUN Rscript -e "install.packages('BiocManager', dependencies=TRUE, repos='http://cran.rstudio.com/')" && \
+RUN Rscript -e "install.packages('BiocManager', dependencies=TRUE, repos='http://cran.rstudio.com/')"
 #    Rscript -e "BiocManager::install(c('GenomicFeatures', 'Biostrings', 'biomaRt', 'rtracklayer', 'stringr', 'ggplot2', 'patchwork', 'cowplot'))"
 
 #COPY --from=Micromamba /usr/bin/ /bin/
