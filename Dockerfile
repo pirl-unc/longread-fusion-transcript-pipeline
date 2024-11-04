@@ -66,6 +66,7 @@ FROM ubuntu:22.04
 #    apt-get install -y openjdk-11-jre-headless wget && \
 #    apt-get clean;
 
+ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y r-base
 
 RUN Rscript -e "install.packages('BiocManager', dependencies=TRUE, repos='http://cran.rstudio.com/')"
