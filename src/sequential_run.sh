@@ -1,7 +1,7 @@
 
 DOCKER_SRC=/src
 
-source $DOCKER_SRC/environment.config $1
+source $DOCKER_SRC/environment.config
 
 bash $DOCKER_SRC/generate_annotation_resources.sh
 bash $DOCKER_SRC/generate_fusim.sh
