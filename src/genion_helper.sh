@@ -30,7 +30,7 @@ genion \
   -i ${DATADIR}/fusions-${1}-${5}-${6}-${4}.fq \
   --gtf ${GTF_REFERENCE_ENS} \
   --gpaf ${DATADIR_MINIMAP}/fusions-${1}-${5}-${6}-${4}.paf \
-  -s ${REF_STORAGE_DIR}/genion-selfalign.tsv \
+  -s ${GENSELF} \
   -d ${GENOMIC_SUPER_DUPS} \
   -o ${GENION_DIR}/fusions-${1}-${5}-${6}-${4}-genion-minsup-${9}.tsv \
   --min-support ${9}

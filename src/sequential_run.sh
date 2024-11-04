@@ -8,11 +8,19 @@ bash $DOCKER_SRC/generate_fusim.sh
 
 bash $DOCKER_SRC/generate_simulated_data.sh
 
-#eval ${TF_BASH} $DOCKER_SRC/pbmm2_index.sh
-#eval ${TF_BASH} $DOCKER_SRC/star_index.sh
-#eval ${TF_BASH} $DOCKER_SRC/genself.sh
+if [ ! -f ${PBMM2_MMI} ]; then
+  eval ${TF_BASH} $DOCKER_SRC/pbmm2_index.sh
+fi
 
-#bash $DOCKER_SRC/generate_mapping.sh
+if [ ! -d ${STAR_INDEX} ]; then
+  eval ${TF_BASH} $DOCKER_SRC/star_index.sh
+fi
+
+if [ ! -f ${GENSELF} ]; then
+  eval ${TF_BASH} $DOCKER_SRC/genself.sh
+fi
+
+bash $DOCKER_SRC/generate_mapping.sh
 
 #bash $DOCKER_SRC/generate_longgf.sh
 #bash $DOCKER_SRC/generate_jaffal.sh

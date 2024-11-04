@@ -31,44 +31,28 @@ COPY --chown=$MAMBA_USER:$MAMBA_USER env_a.yaml /tmp/env_a.yaml
 COPY --chown=$MAMBA_USER:$MAMBA_USER env_b.yaml /tmp/env_b.yaml
 COPY --chown=$MAMBA_USER:$MAMBA_USER env_f.yaml /tmp/env_f.yaml
 
-#RUN micromamba install -y -n base -f /tmp/env.yaml && \
-#    micromamba clean --all --yes && \
-#    micromamba create -y -f /tmp/env_a.yaml && \
-#    micromamba clean --all --yes && \
-#    micromamba create -y -f /tmp/env_b.yaml && \
-#    micromamba clean --all --yes && \
-#    micromamba create -y -f /tmp/env_f.yaml && \
-#    micromamba clean --all --yes
+RUN micromamba install -y -n base -f /tmp/env.yaml && \
+    micromamba clean --all --yes && \
+    micromamba create -y -f /tmp/env_a.yaml && \
+    micromamba clean --all --yes && \
+    micromamba create -y -f /tmp/env_b.yaml && \
+    micromamba clean --all --yes && \
+    micromamba create -y -f /tmp/env_f.yaml && \
+    micromamba clean --all --yes
 
-
-#FROM ubuntu:24.04
-#COPY --from=Pbmm2 /usr/local/bin/pbmm2 /bin/
-#COPY --from=PBFusion /usr/local/bin/pbfusion /bin/
-#COPY --from=Genion /opt/conda/envs/env/bin//genion /bin/
-#COPY --from=Minimap2 /usr/local/bin/minimap2 /bin/
 COPY --from=JAFFA /JAFFA /JAFFA
-#COPY --from=Rbase /usr/bin /bin/
 COPY --from=Fusim /opt/ /bin/
-
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-#RUN apt-get update && apt-get install -y wget bzip2 && \
-#    wget -qO-  https://micromamba.snakepit.net/api/micromamba/linux-64/latest | tar -xvj bin/micromamba
-#RUN touch /root/.bashrc
-#RUN ./bin/micromamba shell init -s bash -p /opt/conda
-#RUN grep -v '[ -z "\$PS1" ] && return' /root/.bashrc  > /opt/conda/bashrc
-#RUN apt-get clean autoremove --yes
-#RUN rm -rf /var/lib/{apt,dpkg,cache,log}
+USER root
+RUN apt update && \
+    apt install -y libcurl4-openssl-dev libssl-dev libxml2-dev liblzma-dev r-base curl wget && \
+    apt clean;
 
-#USER root
-#RUN apt update && \
-#    apt install -y libcurl4-openssl-dev libssl-dev libxml2-dev liblzma-dev r-base curl wget && \
-#    apt clean;
-
-#RUN R -q -e "install.packages(c('curl'))" && \
-#    Rscript -e "install.packages('BiocManager', dependencies=TRUE, repos='http://cran.rstudio.com/')" && \
-#    Rscript -e "BiocManager::install(c('GenomicFeatures', 'Biostrings', 'biomaRt', 'rtracklayer', 'stringr', 'ggplot2', 'patchwork', 'cowplot'))"
+RUN R -q -e "install.packages(c('curl'))" && \
+    Rscript -e "install.packages('BiocManager', dependencies=TRUE, repos='http://cran.rstudio.com/')" && \
+    Rscript -e "BiocManager::install(c('GenomicFeatures', 'Biostrings', 'biomaRt', 'rtracklayer', 'stringr', 'ggplot2', 'patchwork', 'cowplot'))"
 
 ENV PATH="$PATH:/bin:/JAFFA/tools/bin:/JAFFA:/bin/fusim-0.2.2:/bin/Fusionseeker"
 
