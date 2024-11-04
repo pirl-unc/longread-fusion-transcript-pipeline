@@ -15,7 +15,6 @@
 #FROM quay.io/biocontainers/genion:1.2.3--hdcf5f25_1 AS Genion
 #FROM quay.io/biocontainers/star-fusion:1.10.0--hdfd78af_1 AS Starfusion
 #FROM staphb/samtools:1.9 AS Samtools
-#FROM rocker/r-base:4.4.0 AS Rbase
 
 #FROM mambaorg/micromamba:2.0.2
 
@@ -39,36 +38,39 @@ RUN wget https://github.com/aebruno/fusim/raw/master/releases/fusim-0.2.2-bin.zi
 RUN wget https://www.niehs.nih.gov/sites/default/files/2024-02/artbinmountrainier2016.06.05linux64.tgz && \
     tar xvzf artbinmountrainier2016.06.05linux64.tgz
 
-FROM mambaorg/micromamba:2.0.2 AS Micromamba
-COPY --chown=$MAMBA_USER:$MAMBA_USER env.yaml /tmp/env.yaml
+FROM rocker/r-ver:4.4.0
 
-RUN micromamba install -y -n base -f /tmp/env.yaml && \
-    micromamba clean --all --yes
+RUN Rscript -e "install.packages('BiocManager', dependencies=TRUE, repos='http://cran.rstudio.com/')" && \
+    Rscript -e "BiocManager::install(c('GenomicFeatures', 'Biostrings', 'biomaRt', 'rtracklayer', 'stringr', 'ggplot2', 'patchwork', 'cowplot'),dependencies=TRUE')"
+
+#FROM mambaorg/micromamba:2.0.2 AS Micromamba
+#COPY --chown=$MAMBA_USER:$MAMBA_USER env.yaml /tmp/env.yaml
+
+#RUN micromamba install -y -n base -f /tmp/env.yaml && \
+#    micromamba clean --all --yes
 
 #--file environment.yml
 
-FROM ubuntu:22.04
+#FROM ubuntu:22.04
 #COPY --from=Pbmm2 /usr/local/bin/pbmm2 /bin/
 #COPY --from=PBFusion /usr/local/bin/pbfusion /bin/
 #COPY --from=Genion /opt/conda/envs/env/bin//genion /bin/
 #COPY --from=Minimap2 /usr/local/bin/minimap2 /bin/
 #COPY --from=JAFFA /JAFFA /JAFFA
 #COPY --from=Rbase /usr/bin /bin/
-COPY --from=Fusim /opt/ /bin/
+#COPY --from=Fusim /opt/ /bin/
 
 #RUN apt-get update && \
 #    apt-get install -y openjdk-11-jre-headless wget && \
 #    apt-get clean;
 
-COPY --from=Micromamba /usr/bin/ /bin/
-COPY --from=Micromamba /opt/conda/bin/ /bin/
+#COPY --from=Micromamba /usr/bin/ /bin/
+#COPY --from=Micromamba /opt/conda/bin/ /bin/
 
-ENV PATH="$PATH:/bin:/JAFFA/tools/bin:/JAFFA:/opt/fusim-0.2.2"
-
-RUN Rscript -e "install.packages('BiocManager', dependencies=TRUE, repos='http://cran.rstudio.com/')" && \
-    Rscript -e "BiocManager::install(c('GenomicFeatures', 'Biostrings', 'biomaRt', 'rtracklayer', 'stringr', 'ggplot2', 'patchwork', 'cowplot'),dependencies=TRUE')"
+#ENV PATH="$PATH:/bin:/JAFFA/tools/bin:/JAFFA:/opt/fusim-0.2.2"
 
 
-COPY ./src ./src
+
+#COPY ./src ./src
 
 #ENTRYPOINT ["bash", "./src/sequential_run.sh"]
