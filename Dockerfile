@@ -38,10 +38,10 @@ RUN wget https://github.com/aebruno/fusim/raw/master/releases/fusim-0.2.2-bin.zi
 RUN wget https://www.niehs.nih.gov/sites/default/files/2024-02/artbinmountrainier2016.06.05linux64.tgz && \
     tar xvzf artbinmountrainier2016.06.05linux64.tgz
 
-FROM rocker/r-ver:4.4.0 AS Rbase
+#FROM rocker/r-ver:4.4.0 AS Rbase
 
 #RUN R -q -e 'install.packages("curl")'
-RUN Rscript -e "install.packages('BiocManager', dependencies=TRUE, repos='http://cran.rstudio.com/')"
+#RUN Rscript -e "install.packages('BiocManager', dependencies=TRUE, repos='http://cran.rstudio.com/')"
 #    Rscript -e "BiocManager::install(c('GenomicFeatures', 'Biostrings', 'biomaRt', 'rtracklayer', 'stringr', 'ggplot2', 'patchwork', 'cowplot'))"
 #    Rscript -e "BiocManager::install(c('GenomicFeatures', 'Biostrings', 'biomaRt', 'rtracklayer', 'stringr', 'ggplot2', 'patchwork', 'cowplot'),dependencies=TRUE')"
 
@@ -66,13 +66,17 @@ FROM ubuntu:22.04
 #    apt-get install -y openjdk-11-jre-headless wget && \
 #    apt-get clean;
 
-#COPY --from=Micromamba /usr/bin/ /bin/
-COPY --from=Rbase /usr/local/bin/ /bin/
+RUN apt-get update && apt-get install -y r-base
 
-COPY --from=Rbase /usr/local/lib/R/etc/ldpaths /usr/local/lib/R/etc/ldpaths
-COPY --from=Rbase /usr/local/lib/R/bin/exec/R /usr/local/lib/R/bin/exec/R
-COPY --from=Rbase /usr/local/lib/R/site-library /usr/local/lib/R/site-library
-COPY --from=Rbase /usr/local/lib/R/library /usr/local/lib/R/library
+RUN Rscript -e "install.packages('BiocManager', dependencies=TRUE, repos='http://cran.rstudio.com/')"
+
+#COPY --from=Micromamba /usr/bin/ /bin/
+#COPY --from=Rbase /usr/local/bin/ /bin/
+
+#COPY --from=Rbase /usr/local/lib/R/etc/ldpaths /usr/local/lib/R/etc/ldpaths
+#COPY --from=Rbase /usr/local/lib/R/bin/exec/R /usr/local/lib/R/bin/exec/R
+#COPY --from=Rbase /usr/local/lib/R/site-library /usr/local/lib/R/site-library
+#COPY --from=Rbase /usr/local/lib/R/library /usr/local/lib/R/library
 
 #COPY --from=Micromamba /opt/conda/bin/ /bin/
 
