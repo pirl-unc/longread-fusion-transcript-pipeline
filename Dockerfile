@@ -48,11 +48,15 @@ RUN wget https://www.niehs.nih.gov/sites/default/files/2024-02/artbinmountrainie
 FROM mambaorg/micromamba:2.0.2 AS Micromamba
 COPY --chown=$MAMBA_USER:$MAMBA_USER env.yaml /tmp/env.yaml
 COPY --chown=$MAMBA_USER:$MAMBA_USER env_a.yaml /tmp/env_a.yaml
+COPY --chown=$MAMBA_USER:$MAMBA_USER env_b.yaml /tmp/env_b.yaml
 
 RUN micromamba install -y -n base -f /tmp/env.yaml && \
     micromamba clean --all --yes
 
 RUN micromamba create -y -f /tmp/env_a.yaml && \
+    micromamba clean --all --yes
+
+RUN micromamba create -y -f /tmp/env_b.yaml && \
     micromamba clean --all --yes
 
 #FROM ubuntu:24.04
@@ -77,7 +81,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 USER root
 RUN apt update && \
-    apt install -y r-base curl && \
+    apt install -y r-base curl wget && \
     apt clean;
 
 RUN Rscript -e "install.packages('BiocManager', dependencies=TRUE, repos='http://cran.rstudio.com/')" && \
