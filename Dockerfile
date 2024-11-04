@@ -40,9 +40,9 @@ RUN wget https://www.niehs.nih.gov/sites/default/files/2024-02/artbinmountrainie
 
 FROM rocker/r-ver:4.4.0 AS Rbase
 
-RUN R -q -e 'install.packages("curl")'
-RUN Rscript -e "install.packages('BiocManager', dependencies=TRUE, repos='http://cran.rstudio.com/')" && \
-    Rscript -e "BiocManager::install(c('GenomicFeatures', 'Biostrings', 'biomaRt', 'rtracklayer', 'stringr', 'ggplot2', 'patchwork', 'cowplot'))"
+#RUN R -q -e 'install.packages("curl")'
+RUN Rscript -e "install.packages('BiocManager', dependencies=TRUE, repos='http://cran.rstudio.com/')"
+#    Rscript -e "BiocManager::install(c('GenomicFeatures', 'Biostrings', 'biomaRt', 'rtracklayer', 'stringr', 'ggplot2', 'patchwork', 'cowplot'))"
 #    Rscript -e "BiocManager::install(c('GenomicFeatures', 'Biostrings', 'biomaRt', 'rtracklayer', 'stringr', 'ggplot2', 'patchwork', 'cowplot'),dependencies=TRUE')"
 
 #FROM mambaorg/micromamba:2.0.2 AS Micromamba
@@ -68,6 +68,9 @@ FROM ubuntu:22.04
 
 #COPY --from=Micromamba /usr/bin/ /bin/
 COPY --from=Rbase /usr/local/bin/ /bin/
+
+COPY --from=Rbase /usr/local/lib/R/etc/ldpaths /usr/local/lib/R/etc/ldpaths
+COPY --from=Rbase /usr/local/lib/R/bin/exec/R /usr/local/lib/R/bin/exec/R
 COPY --from=Rbase /usr/local/lib/R/site-library /usr/local/lib/R/site-library
 COPY --from=Rbase /usr/local/lib/R/library /usr/local/lib/R/library
 
