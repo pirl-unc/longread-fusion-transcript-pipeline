@@ -38,6 +38,8 @@ RUN wget https://github.com/aebruno/fusim/raw/master/releases/fusim-0.2.2-bin.zi
 RUN wget https://www.niehs.nih.gov/sites/default/files/2024-02/artbinmountrainier2016.06.05linux64.tgz && \
     tar xvzf artbinmountrainier2016.06.05linux64.tgz
 
+RUN git clone https://github.com/Maggi-Chen/FusionSeeker.git
+
 #FROM rocker/r-ver:4.4.0 AS Rbase
 
 #RUN R -q -e 'install.packages("curl")'
@@ -49,15 +51,17 @@ FROM mambaorg/micromamba:2.0.2 AS Micromamba
 COPY --chown=$MAMBA_USER:$MAMBA_USER env.yaml /tmp/env.yaml
 COPY --chown=$MAMBA_USER:$MAMBA_USER env_a.yaml /tmp/env_a.yaml
 COPY --chown=$MAMBA_USER:$MAMBA_USER env_b.yaml /tmp/env_b.yaml
+COPY --chown=$MAMBA_USER:$MAMBA_USER env_f.yaml /tmp/env_f.yaml
 
-RUN micromamba install -y -n base -f /tmp/env.yaml && \
-    micromamba clean --all --yes
+#RUN micromamba install -y -n base -f /tmp/env.yaml && \
+#    micromamba clean --all --yes && \
+#    micromamba create -y -f /tmp/env_a.yaml && \
+#    micromamba clean --all --yes && \
+#    micromamba create -y -f /tmp/env_b.yaml && \
+#    micromamba clean --all --yes && \
+#    micromamba create -y -f /tmp/env_f.yaml && \
+#    micromamba clean --all --yes
 
-RUN micromamba create -y -f /tmp/env_a.yaml && \
-    micromamba clean --all --yes
-
-RUN micromamba create -y -f /tmp/env_b.yaml && \
-    micromamba clean --all --yes
 
 #FROM ubuntu:24.04
 #COPY --from=Pbmm2 /usr/local/bin/pbmm2 /bin/
@@ -81,10 +85,11 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 USER root
 RUN apt update && \
-    apt install -y r-base curl wget && \
+    apt install -y libcurl4-openssl-dev libxml2-dev liblzma-dev r-base curl wget && \
     apt clean;
 
-RUN Rscript -e "install.packages('BiocManager', dependencies=TRUE, repos='http://cran.rstudio.com/')" && \
+RUN R -q -e "install.packages(c('curl'))" && \
+    Rscript -e "install.packages('BiocManager', dependencies=TRUE, repos='http://cran.rstudio.com/')" && \
     Rscript -e "BiocManager::install(c('GenomicFeatures', 'Biostrings', 'biomaRt', 'rtracklayer', 'stringr', 'ggplot2', 'patchwork', 'cowplot'))"
 
 #COPY --from=Micromamba /usr/bin/ /bin/
@@ -97,9 +102,7 @@ RUN Rscript -e "install.packages('BiocManager', dependencies=TRUE, repos='http:/
 
 #COPY --from=Micromamba /opt/conda/bin/ /bin/
 
-ENV PATH="$PATH:/bin:/JAFFA/tools/bin:/JAFFA:/opt/fusim-0.2.2"
-
-
+ENV PATH="$PATH:/bin:/JAFFA/tools/bin:/JAFFA:/bin/fusim-0.2.2:/bin/Fusionseeker"
 
 COPY ./src ./src
 

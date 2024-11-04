@@ -26,7 +26,7 @@ done
 
 #[ ! -d ${DATADIR}/fusions-${1}-${JAFFAL_QUALITY_NAME}-${6}-${4}.fq.gz ] && cat ${DATADIR}/fusions-${1}-${5}-${6}-${4}.fq | gzip ${DATADIR}/fusions-${1}-${JAFFAL_QUALITY_NAME}-${6}-${4}.fq.gz
 
-~/JAFFA-version-2.2/tools/bin/bpipe run ~/JAFFA-version-2.2/JAFFAL.groovy \
+/JAFFA/tools/bin/bpipe run /JAFFA/JAFFAL.groovy \
   ${DATADIR}/fusions-${1}-${JAFFAL_QUALITY_NAME}-${6}-${4}.fq.gz
 
 cd $CURRENT

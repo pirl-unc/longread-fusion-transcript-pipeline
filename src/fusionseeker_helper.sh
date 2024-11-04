@@ -5,6 +5,8 @@
 #SBATCH --cpus-per-task 1
 #SBATCH --mem-per-cpu 10g
 
+micromamba activate fusionseeker
+
 DATADIR_MINIMAP=${ALIGNMENT_STORAGE_DIR}/longreads_${9}k_minimap2_ens
 FUSIONSEEKER_DIR=${FUSIONSEEKER_STORAGE_DIR}/longreads_${9}k_fusionseeker
 
@@ -15,7 +17,7 @@ if [[ ${5} == *"pacbio"* ]]; then
   DATATYPE=isoseq
 fi
 
-/home/vantwisk/FusionSeeker/fusionseeker \
+fusionseeker \
   --thread ${THREADS} \
   --bam ${DATADIR_MINIMAP}/fusions-${1}-${5}-${6}-${4}-sorted.bam \
   --datatype $DATATYPE \
@@ -30,3 +32,5 @@ fi
 #  --ref ${DNA_REFERENCE} \
 #  -o ${FUSIONSEEKER_DIR}/fusions-${1}-${5}-${6}-${4}-fusionseeker \
 #  -s 2
+
+micromamba deactivate fusionseeker

@@ -11,7 +11,7 @@ if [ ! -f ${REF_STORAGE_DIR}/hg38_chroma.fa ]; then
   samtools faidx ${REF_STORAGE_DIR}/hg38_chroma.fa
 fi
 
-java -jar /home/vantwisk/fusim-0.2.2/fusim.jar \
+java -jar /bin/fusim-0.2.2/fusim.jar \
   --gene-model=${REF_STORAGE_DIR}/refFlat.txt \
   --fusions=${NFUSIONS} \
   --reference=${REF_STORAGE_DIR}/hg38_chroma.fa \
