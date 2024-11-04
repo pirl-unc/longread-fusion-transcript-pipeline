@@ -6,7 +6,7 @@ fi
 
 if [ ! -f ${REF_STORAGE_DIR}/hg38_chroma.fa ]; then
   wget -O ${REF_STORAGE_DIR}/hg38.chromFa.tar.gz ftp://hgdownload.cse.ucsc.edu/goldenPath/hg38/bigZips/hg38.chromFa.tar.gz
-  tar -xzf ${REF_STORAGE_DIR}/hg38.chromFa.tar.gz
+  tar xzvf ${REF_STORAGE_DIR}/hg38.chromFa.tar.gz
   cat ${REF_STORAGE_DIR}/chr*.fa > hg38_chroma.fa
   samtools faidx ${REF_STORAGE_DIR}/hg38_chroma.fa
 fi
