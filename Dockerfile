@@ -76,9 +76,9 @@ ENV DEBIAN_FRONTEND=noninteractive
 #RUN rm -rf /var/lib/{apt,dpkg,cache,log}
 
 USER root
-#RUN apt-get update && \
-#    apt-get install -y openjdk-11-jre-headless r-base curl && \
-#    apt-get clean;
+RUN apt update && \
+    apt install -y r-base curl && \
+    apt clean;
 
 RUN Rscript -e "install.packages('BiocManager', dependencies=TRUE, repos='http://cran.rstudio.com/')" && \
     Rscript -e "BiocManager::install(c('GenomicFeatures', 'Biostrings', 'biomaRt', 'rtracklayer', 'stringr', 'ggplot2', 'patchwork', 'cowplot'))"
