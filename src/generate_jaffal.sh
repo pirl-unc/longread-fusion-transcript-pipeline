@@ -16,7 +16,7 @@ for i in $(seq 1 ${REPLICATES}); do
     for j in ${!QUALITY[@]}; do
       for k in ${!TECH[@]}; do
         for n in ${!N_TRANSCRIPTS[@]}; do
-           eval ${TF_BASH} jaffal_helper.sh ${COVERAGE[$q]} 1 1 ${i} ${QUALITY[$j]} ${TECH[$k]} ax sam ${N_TRANSCRIPTS[$n]}
+           eval ${TF_BASH} $DOCKER_SRC/jaffal_helper.sh ${COVERAGE[$q]} 1 1 ${i} ${QUALITY[$j]} ${TECH[$k]} ax sam ${N_TRANSCRIPTS[$n]}
         done
       done
     done

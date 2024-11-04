@@ -1,20 +1,26 @@
-source environment.config $1
 
-bash generate_annotation_resources.sh
-bash generate_fusim.sh
+DOCKER_SRC=/src
 
-bash generate_simulated_data.sh
+source $DOCKER_SRC/environment.config $1
 
-#eval ${TF_BASH} pbmm2_index.sh
-#eval ${TF_BASH} star_index.sh
-#eval ${TF_BASH} genself.sh
+bash $DOCKER_SRC/generate_annotation_resources.sh
+bash $DOCKER_SRC/generate_fusim.sh
 
-#bash generate_mapping.sh
+bash $DOCKER_SRC/generate_simulated_data.sh
 
-#bash generate_longgf.sh
-#bash generate_jaffal.sh
-#bash generate_genion.sh
-#bash generate_pbfusion.sh
-#bash generate_fusionseeker.sh
+#eval ${TF_BASH} $DOCKER_SRC/pbmm2_index.sh
+#eval ${TF_BASH} $DOCKER_SRC/star_index.sh
+#eval ${TF_BASH} $DOCKER_SRC/genself.sh
 
-#bash generate_arriba.sh
+#bash $DOCKER_SRC/generate_mapping.sh
+
+#bash $DOCKER_SRC/generate_longgf.sh
+#bash $DOCKER_SRC/generate_jaffal.sh
+#bash $DOCKER_SRC/generate_genion.sh
+#bash $DOCKER_SRC/generate_pbfusion.sh
+#bash $DOCKER_SRC/generate_fusionseeker.sh
+
+#bash $DOCKER_SRC/generate_arriba.sh
+#bash $DOCKER_SRC/generate_starfusion.sh
+
+#bash $DOCKER_SRC/generate_graphs.sh

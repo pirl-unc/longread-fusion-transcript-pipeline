@@ -20,4 +20,4 @@ java -jar /bin/fusim-0.2.2/fusim.jar \
 
 cat ${TRANSCIPT_LIMITED_FILE} ${FUSIM_FASTA_FILE} > ${FUSION_TRANSCRIPTOME}
 
-Rscript create_fusim_ref.R ${FUSIM_TXT_FILE} ${FUSIM_REF_FILE}
+Rscript $DOCKER_SRC/create_fusim_ref.R ${FUSIM_TXT_FILE} ${FUSIM_REF_FILE}

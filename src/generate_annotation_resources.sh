@@ -32,5 +32,5 @@ if [ ! -d ${CTAT_LIB_DIR} ]; then
 fi
 
 if [ ! -f ${TRANSCRIPT_LIMITED_FILE} ]; then
-  Rscript generate_breakpoints.R ${GTF_REFERENCE} ${CDNA_REFERENCE} ${TRANSCRIPT_LIMITED_FILE} ${TRANSCRIPT_LIMIIT}
+  Rscript $DOCKER_SRC/generate_breakpoints.R ${GTF_REFERENCE} ${CDNA_REFERENCE} ${TRANSCRIPT_LIMITED_FILE} ${TRANSCRIPT_LIMIIT}
 fi
