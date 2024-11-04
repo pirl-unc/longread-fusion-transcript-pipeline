@@ -67,9 +67,10 @@ FROM ubuntu:22.04
 #    apt-get clean;
 
 ENV DEBIAN_FRONTEND=noninteractive
-RUN apt-get update && apt-get install -y r-base
+RUN apt-get update && apt-get install -y r-base curl
 
-RUN Rscript -e "install.packages('BiocManager', dependencies=TRUE, repos='http://cran.rstudio.com/')"
+RUN Rscript -e "install.packages('BiocManager', dependencies=TRUE, repos='http://cran.rstudio.com/')" && \
+    Rscript -e "BiocManager::install(c('GenomicFeatures', 'Biostrings', 'biomaRt', 'rtracklayer', 'stringr', 'ggplot2', 'patchwork', 'cowplot'))"
 
 #COPY --from=Micromamba /usr/bin/ /bin/
 #COPY --from=Rbase /usr/local/bin/ /bin/
