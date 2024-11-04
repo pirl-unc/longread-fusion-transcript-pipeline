@@ -47,24 +47,23 @@ RUN wget https://www.niehs.nih.gov/sites/default/files/2024-02/artbinmountrainie
 
 FROM mambaorg/micromamba:2.0.2 AS Micromamba
 COPY --chown=$MAMBA_USER:$MAMBA_USER env.yaml /tmp/env.yaml
+COPY --chown=$MAMBA_USER:$MAMBA_USER env_a.yaml /tmp/env_a.yaml
 
-#RUN micromamba install -y -n base -f /tmp/env.yaml && \
-#    micromamba clean --all --yes
+RUN micromamba install -y -n base -f /tmp/env.yaml && \
+    micromamba clean --all --yes
 
-#--file environment.yml
+RUN micromamba install -y -n arriba -f /tmp/env_a.yaml && \
+    micromamba clean --all --yes
 
 #FROM ubuntu:24.04
 #COPY --from=Pbmm2 /usr/local/bin/pbmm2 /bin/
 #COPY --from=PBFusion /usr/local/bin/pbfusion /bin/
 #COPY --from=Genion /opt/conda/envs/env/bin//genion /bin/
 #COPY --from=Minimap2 /usr/local/bin/minimap2 /bin/
-#COPY --from=JAFFA /JAFFA /JAFFA
+COPY --from=JAFFA /JAFFA /JAFFA
 #COPY --from=Rbase /usr/bin /bin/
-#COPY --from=Fusim /opt/ /bin/
+COPY --from=Fusim /opt/ /bin/
 
-#RUN apt-get update && \
-#    apt-get install -y openjdk-11-jre-headless wget && \
-#    apt-get clean;
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -77,10 +76,12 @@ ENV DEBIAN_FRONTEND=noninteractive
 #RUN rm -rf /var/lib/{apt,dpkg,cache,log}
 
 USER root
-RUN apt update && apt install -y r-base curl
+RUN apt-get update && \
+    apt-get install -y openjdk-11-jre-headless r-base curl && \
+    apt-get clean;
 
-RUN Rscript -e "install.packages('BiocManager', dependencies=TRUE, repos='http://cran.rstudio.com/')"
-#    Rscript -e "BiocManager::install(c('GenomicFeatures', 'Biostrings', 'biomaRt', 'rtracklayer', 'stringr', 'ggplot2', 'patchwork', 'cowplot'))"
+RUN Rscript -e "install.packages('BiocManager', dependencies=TRUE, repos='http://cran.rstudio.com/')" && \
+    Rscript -e "BiocManager::install(c('GenomicFeatures', 'Biostrings', 'biomaRt', 'rtracklayer', 'stringr', 'ggplot2', 'patchwork', 'cowplot'))"
 
 #COPY --from=Micromamba /usr/bin/ /bin/
 #COPY --from=Rbase /usr/local/bin/ /bin/
@@ -92,10 +93,10 @@ RUN Rscript -e "install.packages('BiocManager', dependencies=TRUE, repos='http:/
 
 #COPY --from=Micromamba /opt/conda/bin/ /bin/
 
-#ENV PATH="$PATH:/bin:/JAFFA/tools/bin:/JAFFA:/opt/fusim-0.2.2"
+ENV PATH="$PATH:/bin:/JAFFA/tools/bin:/JAFFA:/opt/fusim-0.2.2"
 
 
 
-#COPY ./src ./src
+COPY ./src ./src
 
-#ENTRYPOINT ["bash", "./src/sequential_run.sh"]
+ENTRYPOINT ["bash", "./src/sequential_run.sh"]

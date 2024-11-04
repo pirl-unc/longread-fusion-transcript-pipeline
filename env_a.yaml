@@ -1,0 +1,7 @@
+name: arriba
+channels:
+    - conda-forge
+    - bioconda
+dependencies:
+    - arriba=2.4.0
+    - star-fusion=1.13.0
