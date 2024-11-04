@@ -52,7 +52,7 @@ COPY --chown=$MAMBA_USER:$MAMBA_USER env_a.yaml /tmp/env_a.yaml
 RUN micromamba install -y -n base -f /tmp/env.yaml && \
     micromamba clean --all --yes
 
-RUN micromamba install -y -n arriba -f /tmp/env_a.yaml && \
+RUN micromamba create -y -f /tmp/env_a.yaml && \
     micromamba clean --all --yes
 
 #FROM ubuntu:24.04
