@@ -22,7 +22,7 @@ RUN apt-get update && \
     tar xvzf artbinmountrainier2016.06.05linux64.tgz && \
     git clone https://github.com/Maggi-Chen/FusionSeeker.git
 
-FROM mambaorg/micromamba:2.0.2
+FROM mambaorg/micromamba:2.0.2 AS envbuilder
 COPY --chown=$MAMBA_USER:$MAMBA_USER env.yaml /tmp/env.yaml
 COPY --chown=$MAMBA_USER:$MAMBA_USER env_a.yaml /tmp/env_a.yaml
 COPY --chown=$MAMBA_USER:$MAMBA_USER env_b.yaml /tmp/env_b.yaml
@@ -34,8 +34,13 @@ RUN micromamba install -y -n base -f /tmp/env.yaml && \
     micromamba create -y -f /tmp/env_f.yaml && \
     micromamba clean --all --yes
 
+FROM mambaorg/micromamba:2.0.2
 COPY --from=JAFFA /JAFFA /JAFFA
 COPY --from=Fusim /opt/ /bin/
+COPY --from=envbuilder /opt/conda/bin/ /opt/base/
+COPY --from=envbuilder /opt/conda/envs/arriba/bin/ /opt/arriba/
+COPY --from=envbuilder /opt/conda/envs/fusionseeker/bin/ /opt/fusionseeker/
+COPY --from=envbuilder /opt/conda/envs/starfusion/bin/ /opt/starfusion/
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -48,7 +53,7 @@ RUN R -q -e "install.packages(c('curl'))" && \
     Rscript -e "install.packages('BiocManager', dependencies=TRUE, repos='http://cran.rstudio.com/')" && \
     Rscript -e "BiocManager::install(c('GenomicFeatures', 'Biostrings', 'biomaRt', 'rtracklayer', 'stringr', 'ggplot2', 'patchwork', 'cowplot'))"
 
-ENV PATH="/opt/conda/envs/arriba:/opt/conda/envs/starfusion:/fusionseeker:/opt/conda/bin:/bin:/JAFFA/tools/bin:/JAFFA:/bin/fusim-0.2.2:/bin/Fusionseeker:$PATH"
+ENV PATH="/opt/arriba:/opt/starfusion:/opt/fusionseeker:/opt/base:/bin:/JAFFA/tools/bin:/JAFFA:/bin/fusim-0.2.2:/bin/Fusionseeker:$PATH"
 
 COPY ./src /src
 COPY ./models /model
