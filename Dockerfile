@@ -40,6 +40,12 @@ RUN micromamba install -y -n base -f /tmp/env.yaml && \
     micromamba create -y -f /tmp/env_f.yaml && \
     micromamba clean --all --yes
 
+SHELL ["/bin/bash", "-c"]
+ENV MAMBA_ROOT_PREFIX /opt/conda
+RUN micromamba shell init -s bash -p /opt/conda && \
+    echo ". /opt/conda/etc/profile.d/micromamba.sh" >> ~/.bashrc && \
+    micromamba activate base
+
 COPY --from=JAFFA /JAFFA /JAFFA
 COPY --from=Fusim /opt/ /bin/
 
@@ -50,9 +56,9 @@ RUN apt update && \
     apt install -y libcurl4-openssl-dev libssl-dev libxml2-dev liblzma-dev r-base curl sed wget && \
     apt clean;
 
-RUN R -q -e "install.packages(c('curl'))" && \
-    Rscript -e "install.packages('BiocManager', dependencies=TRUE, repos='http://cran.rstudio.com/')" && \
-    Rscript -e "BiocManager::install(c('GenomicFeatures', 'Biostrings', 'biomaRt', 'rtracklayer', 'stringr', 'ggplot2', 'patchwork', 'cowplot'))"
+#RUN R -q -e "install.packages(c('curl'))" && \
+#    Rscript -e "install.packages('BiocManager', dependencies=TRUE, repos='http://cran.rstudio.com/')" && \
+#    Rscript -e "BiocManager::install(c('GenomicFeatures', 'Biostrings', 'biomaRt', 'rtracklayer', 'stringr', 'ggplot2', 'patchwork', 'cowplot'))"
 
 ENV PATH="$PATH:/bin:/JAFFA/tools/bin:/JAFFA:/bin/fusim-0.2.2:/bin/Fusionseeker"
 
