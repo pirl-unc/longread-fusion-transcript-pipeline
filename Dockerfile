@@ -39,6 +39,7 @@ RUN micromamba install -y -n base -f /tmp/env.yaml && \
     micromamba clean --all --yes && \
     micromamba create -y -f /tmp/env_f.yaml && \
     micromamba clean --all --yes
+ARG MAMBA_DOCKERFILE_ACTIVATE=1
 
 SHELL ["/bin/bash", "-c"]
 ENV MAMBA_ROOT_PREFIX /opt/conda
