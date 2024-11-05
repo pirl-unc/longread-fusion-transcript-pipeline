@@ -48,7 +48,7 @@ RUN R -q -e "install.packages(c('curl'))" && \
     Rscript -e "install.packages('BiocManager', dependencies=TRUE, repos='http://cran.rstudio.com/')" && \
     Rscript -e "BiocManager::install(c('GenomicFeatures', 'Biostrings', 'biomaRt', 'rtracklayer', 'stringr', 'ggplot2', 'patchwork', 'cowplot'))"
 
-ENV PATH="$PATH:/bin:/JAFFA/tools/bin:/JAFFA:/bin/fusim-0.2.2:/bin/Fusionseeker"
+ENV PATH="/opt/conda/envs/arriba:/opt/conda/envs/starfusion:/fusionseeker:/opt/conda/bin:/bin:/JAFFA/tools/bin:/JAFFA:/bin/fusim-0.2.2:/bin/Fusionseeker:$PATH"
 
 COPY ./src /src
 COPY ./models /model
