@@ -15,30 +15,27 @@ FROM ubuntu:22.04 AS Fusim
 WORKDIR /opt
 
 RUN apt-get update && \
-    apt-get install -y wget unzip git
+    apt-get install -y wget unzip git && \
+    wget https://github.com/aebruno/fusim/raw/master/releases/fusim-0.2.2-bin.zip && \
+    unzip fusim-0.2.2-bin.zip &&\
+    wget https://www.niehs.nih.gov/sites/default/files/2024-02/artbinmountrainier2016.06.05linux64.tgz && \
+    tar xvzf artbinmountrainier2016.06.05linux64.tgz && \
+    git clone https://github.com/Maggi-Chen/FusionSeeker.git
 
-RUN wget https://github.com/aebruno/fusim/raw/master/releases/fusim-0.2.2-bin.zip && \
-    unzip fusim-0.2.2-bin.zip
-
-RUN wget https://www.niehs.nih.gov/sites/default/files/2024-02/artbinmountrainier2016.06.05linux64.tgz && \
-    tar xvzf artbinmountrainier2016.06.05linux64.tgz
-
-RUN git clone https://github.com/Maggi-Chen/FusionSeeker.git
-
-FROM mambaorg/micromamba:2.0.2 AS Micromamba
+FROM mambaorg/micromamba:2.0.2
 COPY --chown=$MAMBA_USER:$MAMBA_USER env.yaml /tmp/env.yaml
 COPY --chown=$MAMBA_USER:$MAMBA_USER env_a.yaml /tmp/env_a.yaml
-COPY --chown=$MAMBA_USER:$MAMBA_USER env_b.yaml /tmp/env_b.yaml
-COPY --chown=$MAMBA_USER:$MAMBA_USER env_f.yaml /tmp/env_f.yaml
+#COPY --chown=$MAMBA_USER:$MAMBA_USER env_b.yaml /tmp/env_b.yaml
+#COPY --chown=$MAMBA_USER:$MAMBA_USER env_f.yaml /tmp/env_f.yaml
 
 RUN micromamba install -y -n base -f /tmp/env.yaml && \
     micromamba clean --all --yes && \
     micromamba create -y -f /tmp/env_a.yaml && \
     micromamba clean --all --yes && \
-    micromamba create -y -f /tmp/env_b.yaml && \
-    micromamba clean --all --yes && \
-    micromamba create -y -f /tmp/env_f.yaml && \
-    micromamba clean --all --yes
+#    micromamba create -y -f /tmp/env_b.yaml && \
+#    micromamba clean --all --yes && \
+#    micromamba create -y -f /tmp/env_f.yaml && \
+#    micromamba clean --all --yes
 ARG MAMBA_DOCKERFILE_ACTIVATE=1
 
 #SHELL ["/bin/bash", "-c"]
@@ -52,10 +49,10 @@ COPY --from=Fusim /opt/ /bin/
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-USER root
-RUN apt update && \
-    apt install -y libcurl4-openssl-dev libssl-dev libxml2-dev liblzma-dev r-base curl sed wget && \
-    apt clean;
+#USER root
+#RUN apt update && \
+#    apt install -y libcurl4-openssl-dev libssl-dev libxml2-dev liblzma-dev r-base curl sed wget && \
+#    apt clean;
 
 #RUN R -q -e "install.packages(c('curl'))" && \
 #    Rscript -e "install.packages('BiocManager', dependencies=TRUE, repos='http://cran.rstudio.com/')" && \
