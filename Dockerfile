@@ -41,11 +41,11 @@ RUN micromamba install -y -n base -f /tmp/env.yaml && \
     micromamba clean --all --yes
 ARG MAMBA_DOCKERFILE_ACTIVATE=1
 
-SHELL ["/bin/bash", "-c"]
-ENV MAMBA_ROOT_PREFIX /opt/conda
-RUN micromamba shell init -s bash /opt/conda && \
-    echo ". /opt/conda/etc/profile.d/micromamba.sh" >> ~/.bashrc && \
-    micromamba activate base
+#SHELL ["/bin/bash", "-c"]
+#ENV MAMBA_ROOT_PREFIX /opt/conda
+#RUN micromamba shell init -s bash /opt/conda && \
+#    echo ". /opt/conda/etc/profile.d/micromamba.sh" >> ~/.bashrc && \
+#    micromamba activate base
 
 COPY --from=JAFFA /JAFFA /JAFFA
 COPY --from=Fusim /opt/ /bin/
