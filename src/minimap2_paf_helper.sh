@@ -5,6 +5,9 @@
 #SBATCH -n 1
 #SBATCH -t 12:00:00
 
+eval "$(micromamba shell init -s bash)"
+micromamba activate base
+
 DATADIR=${SIM_STORAGE_DIR}/longreads_${9}k
 DATADIR_MINIMAP=${ALIGNMENT_STORAGE_DIR}/longreads_${9}k_minimap2
 
@@ -21,3 +24,5 @@ echo $8 #paf
 echo $9 #n
 
 minimap2 -t ${THREADS} --MD -cx splice ${DNA_REFERENCE} ${DATADIR}/fusions-${1}-${5}-${6}-${4}.fq.gz > ${DATADIR_MINIMAP}/fusions-${1}-${5}-${6}-${4}.${8}
+
+micromamba deactivate

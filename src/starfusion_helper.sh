@@ -5,6 +5,7 @@
 #SBATCH --time 12:00:00
 #SBATCH --mem=128G
 
+eval "$(micromamba shell init -s bash)"
 micromamba activate starfusion
 
 DATADIR=${SIM_STORAGE_DIR}/shortreads_${6}k
@@ -17,4 +18,4 @@ STAR-Fusion --genome_lib_dir ${CTAT_LIB_DIR}/ctat_genome_lib_build_dir \
 	--right_fq ${DATADIR}/fusions-${1}-${4}-${5}-2.fq \
 	--output_dir ${STARFUSION_DIR}/fusions-${1}-${4}-${5}
 
-micromamba deactivate starfusion
+micromamba deactivate

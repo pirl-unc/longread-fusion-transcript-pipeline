@@ -5,6 +5,9 @@
 #SBATCH -n 1
 #SBATCH -t 12:00:00
 
+eval "$(micromamba shell init -s bash)"
+micromamba activate base
+
 DATADIR=${SIM_STORAGE_DIR}/longreads_${9}k
 DATADIR_MINIMAP=${ALIGNMENT_STORAGE_DIR}/longreads_${9}k_minimap2_ens
 
@@ -26,3 +29,5 @@ samtools view ${DATADIR_MINIMAP}/fusions-${1}-${5}-${6}-${4}.sam -o ${DATADIR_MI
 samtools sort ${DATADIR_MINIMAP}/fusions-${1}-${5}-${6}-${4}.bam -o ${DATADIR_MINIMAP}/fusions-${1}-${5}-${6}-${4}-sorted.bam
 samtools index ${DATADIR_MINIMAP}/fusions-${1}-${5}-${6}-${4}-sorted.bam
 samtools sort -n ${DATADIR_MINIMAP}/fusions-${1}-${5}-${6}-${4}.bam -o ${DATADIR_MINIMAP}/fusions-${1}-${5}-${6}-${4}-n-sorted.bam
+
+micromamba deactivate

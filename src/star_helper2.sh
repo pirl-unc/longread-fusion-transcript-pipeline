@@ -5,6 +5,7 @@
 #SBATCH --time 12:00:00
 #SBATCH --mem=128G
 
+eval "$(micromamba shell init -s bash)"
 micromamba activate arriba
 
 ulimit -S -n 4096
@@ -33,4 +34,4 @@ STAR \
     	--chimSegmentReadGapMax 3 \
     	--chimMultimapNmax 50
 
-micromamba deactivate arriba
+micromamba deactivate
