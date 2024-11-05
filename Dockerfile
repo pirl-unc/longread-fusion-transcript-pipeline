@@ -29,9 +29,8 @@ COPY --chown=$MAMBA_USER:$MAMBA_USER env_a.yaml /tmp/env_a.yaml
 #COPY --chown=$MAMBA_USER:$MAMBA_USER env_f.yaml /tmp/env_f.yaml
 
 RUN micromamba install -y -n base -f /tmp/env.yaml && \
-    micromamba clean --all --yes && \
     micromamba create -y -f /tmp/env_a.yaml && \
-    micromamba clean --all --yes && \
+    micromamba clean --all --yes
 #    micromamba create -y -f /tmp/env_b.yaml && \
 #    micromamba clean --all --yes && \
 #    micromamba create -y -f /tmp/env_f.yaml && \
