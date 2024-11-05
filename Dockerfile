@@ -57,5 +57,6 @@ RUN R -q -e "install.packages(c('curl'))" && \
 ENV PATH="$PATH:/bin:/JAFFA/tools/bin:/JAFFA:/bin/fusim-0.2.2:/bin/Fusionseeker"
 
 COPY ./src /src
+COPY ./models /model
 
 ENTRYPOINT ["bash", "/src/sequential_run.sh"]
