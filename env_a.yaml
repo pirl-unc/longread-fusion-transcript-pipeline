@@ -4,4 +4,3 @@ channels:
     - bioconda
 dependencies:
     - arriba=2.4.0
-    - samtools=1.9
