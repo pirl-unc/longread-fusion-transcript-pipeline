@@ -5,9 +5,6 @@
 #SBATCH -n 1
 #SBATCH --time 24:00:00
 
-eval "$(micromamba shell init -s bash)"
-micromamba activate base
-
 OUTDIR=${SIM_STORAGE_DIR}/longreads_${8}k
 
 [ ! -d ${OUTDIR} ] && mkdir ${OUTDIR}
@@ -31,4 +28,3 @@ mv ${OUTDIR}/fusions-${1}-${5}-${6}-${4}_2.fq ${OUTDIR}/fusions-${1}-${5}-${6}-$
 gzip ${OUTDIR}/fusions-${1}-${5}-${6}-${4}.fq
 #awk '{ if (NR%4==1) gsub(".*","@transcript/"NR,$1); print }' ${OUTDIR}/fusions-${1}-${5}-${6}-${4}.fq > ${OUTDIR}/fusions-${1}-${5}-${6}-${4}.fq
 
-micromamba deactivate

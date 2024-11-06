@@ -8,7 +8,7 @@ FROM davidsongroup/jaffa:2.4 AS JAFFA
 #FROM quay.io/biocontainers/star:2.7.11b--h43eeafb_2 AS Star
 #FROM quay.io/biocontainers/genion:1.2.3--hdcf5f25_1 AS Genion
 #FROM quay.io/biocontainers/star-fusion:1.10.0--hdfd78af_1 AS Starfusion
-#FROM staphb/samtools:1.9 AS Samtools
+FROM staphb/samtools:1.9 AS Samtools
 
 FROM ubuntu:22.04 AS Fusim
 
@@ -38,6 +38,7 @@ FROM mambaorg/micromamba:2.0.2
 COPY --from=JAFFA /JAFFA /JAFFA
 COPY --from=Fusim /opt/ /bin/
 COPY --from=envbuilder /opt/conda/envs/ /opt/conda/envs/
+COPY --from=Samtools /usr/local/bin/ /opt/conda/samtools/
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -46,11 +47,11 @@ RUN apt update && \
     apt install -y libcurl4-openssl-dev libssl-dev libxml2-dev liblzma-dev r-base curl sed wget && \
     apt clean;
 
-RUN R -q -e "install.packages(c('curl'))" && \
-    Rscript -e "install.packages('BiocManager', dependencies=TRUE, repos='http://cran.rstudio.com/')" && \
-    Rscript -e "BiocManager::install(c('GenomicFeatures', 'Biostrings', 'biomaRt', 'rtracklayer', 'stringr', 'ggplot2', 'patchwork', 'cowplot'))"
+#RUN R -q -e "install.packages(c('curl'))" && \
+#    Rscript -e "install.packages('BiocManager', dependencies=TRUE, repos='http://cran.rstudio.com/')" && \
+#    Rscript -e "BiocManager::install(c('GenomicFeatures', 'Biostrings', 'biomaRt', 'rtracklayer', 'stringr', 'ggplot2', 'patchwork', 'cowplot'))"
 
-ENV PATH="/opt/conda/envs/arriba/bin:/opt/conda/envs/fusionseeker/bin:/opt/conda/envs/starfusion/bin:/opt/conda/envs/normal/bin:/bin:/JAFFA/tools/bin:/JAFFA:/bin/fusim-0.2.2:/bin/Fusionseeker:$PATH"
+ENV PATH="/opt/conda/samtools:/opt/conda/envs/arriba/bin:/opt/conda/envs/fusionseeker/bin:/opt/conda/envs/starfusion/bin:/opt/conda/envs/normal/bin:/bin:/JAFFA/tools/bin:/JAFFA:/bin/fusim-0.2.2:/bin/Fusionseeker:$PATH"
 
 COPY ./src /src
 COPY ./models /model

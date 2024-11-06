@@ -5,9 +5,6 @@
 #SBATCH --cpus-per-task 1
 #SBATCH --mem-per-cpu 10g
 
-eval "$(micromamba shell init -s bash)"
-micromamba activate fusionseeker
-
 DATADIR_MINIMAP=${ALIGNMENT_STORAGE_DIR}/longreads_${9}k_minimap2_ens
 FUSIONSEEKER_DIR=${FUSIONSEEKER_STORAGE_DIR}/longreads_${9}k_fusionseeker
 
@@ -34,4 +31,3 @@ fusionseeker \
 #  -o ${FUSIONSEEKER_DIR}/fusions-${1}-${5}-${6}-${4}-fusionseeker \
 #  -s 2
 
-micromamba deactivate

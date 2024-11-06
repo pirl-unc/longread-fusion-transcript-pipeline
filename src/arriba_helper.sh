@@ -5,9 +5,6 @@
 #SBATCH --time 12:00:00
 #SBATCH --mem=128G
 
-eval "$(micromamba shell init -s bash)"
-micromamba activate arriba
-
 MAPPING_DIR=${ALIGNMENT_STORAGE_DIR}/shortreads_${6}k_star
 ARRIBA_DIR=${ARRIBA_STORAGE_DIR}/shortreads_${6}k_arriba
 
@@ -22,5 +19,3 @@ arriba \
     -k /home/vantwisk/arriba_v2.2.1/database/known_fusions_hg38_GRCh38_v2.2.1.tsv \
     -t /home/vantwisk/arriba_v2.2.1/database/known_fusions_hg38_GRCh38_v2.2.1.tsv \
     -p /home/vantwisk/arriba_v2.2.1/database/protein_domains_hg38_GRCh38_v2.2.1.gff3
-
-micromamba deactivate
