@@ -8,7 +8,7 @@ FROM davidsongroup/jaffa:2.4 AS JAFFA
 #FROM quay.io/biocontainers/star:2.7.11b--h43eeafb_2 AS Star
 #FROM quay.io/biocontainers/genion:1.2.3--hdcf5f25_1 AS Genion
 #FROM quay.io/biocontainers/star-fusion:1.10.0--hdfd78af_1 AS Starfusion
-FROM staphb/samtools:1.9 AS Samtools
+#FROM staphb/samtools:1.9 AS Samtools
 
 FROM ubuntu:22.04 AS Fusim
 
@@ -27,11 +27,13 @@ COPY --chown=$MAMBA_USER:$MAMBA_USER env.yaml /tmp/env.yaml
 COPY --chown=$MAMBA_USER:$MAMBA_USER env_a.yaml /tmp/env_a.yaml
 COPY --chown=$MAMBA_USER:$MAMBA_USER env_b.yaml /tmp/env_b.yaml
 COPY --chown=$MAMBA_USER:$MAMBA_USER env_f.yaml /tmp/env_f.yaml
+COPY --chown=$MAMBA_USER:$MAMBA_USER env_s.yaml /tmp/env_s.yaml
 
 RUN micromamba create -y -f /tmp/env.yaml && \
     micromamba create -y -f /tmp/env_a.yaml && \
     micromamba create -y -f /tmp/env_b.yaml && \
     micromamba create -y -f /tmp/env_f.yaml && \
+    micromamba create -y -f /tmp/env_s.yaml && \
     micromamba clean --all --yes
 
 FROM mambaorg/micromamba:2.0.2
@@ -51,7 +53,7 @@ RUN R -q -e "install.packages(c('curl'))" && \
     Rscript -e "install.packages('BiocManager', dependencies=TRUE, repos='http://cran.rstudio.com/')" && \
     Rscript -e "BiocManager::install(c('GenomicFeatures', 'Biostrings', 'biomaRt', 'rtracklayer', 'stringr', 'ggplot2', 'patchwork', 'cowplot'))"
 
-ENV PATH="/opt/conda/samtools:/opt/conda/envs/arriba/bin:/opt/conda/envs/fusionseeker/bin:/opt/conda/envs/starfusion/bin:/opt/conda/envs/normal/bin:/bin:/JAFFA/tools/bin:/JAFFA:/bin/fusim-0.2.2:/bin/Fusionseeker:$PATH"
+ENV PATH="$PATH:/opt/conda/samtools/bin:/opt/conda/envs/arriba/bin:/opt/conda/envs/fusionseeker/bin:/opt/conda/envs/starfusion/bin:/opt/conda/envs/normal/bin:/bin:/JAFFA/tools/bin:/JAFFA:/bin/fusim-0.2.2:/bin/Fusionseeker"
 
 COPY ./src /src
 COPY ./models /model
