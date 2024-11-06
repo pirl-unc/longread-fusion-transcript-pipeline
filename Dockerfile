@@ -47,9 +47,9 @@ RUN apt update && \
     apt install -y libcurl4-openssl-dev libssl-dev libxml2-dev liblzma-dev r-base curl sed wget && \
     apt clean;
 
-#RUN R -q -e "install.packages(c('curl'))" && \
-#    Rscript -e "install.packages('BiocManager', dependencies=TRUE, repos='http://cran.rstudio.com/')" && \
-#    Rscript -e "BiocManager::install(c('GenomicFeatures', 'Biostrings', 'biomaRt', 'rtracklayer', 'stringr', 'ggplot2', 'patchwork', 'cowplot'))"
+RUN R -q -e "install.packages(c('curl'))" && \
+    Rscript -e "install.packages('BiocManager', dependencies=TRUE, repos='http://cran.rstudio.com/')" && \
+    Rscript -e "BiocManager::install(c('GenomicFeatures', 'Biostrings', 'biomaRt', 'rtracklayer', 'stringr', 'ggplot2', 'patchwork', 'cowplot'))"
 
 ENV PATH="/opt/conda/samtools:/opt/conda/envs/arriba/bin:/opt/conda/envs/fusionseeker/bin:/opt/conda/envs/starfusion/bin:/opt/conda/envs/normal/bin:/bin:/JAFFA/tools/bin:/JAFFA:/bin/fusim-0.2.2:/bin/Fusionseeker:$PATH"
 
