@@ -1,7 +1,4 @@
 
-eval "$(micromamba shell init -s bash)"
-micromamba activate base
-
 if [ ! -f ${REF_STORAGE_DIR}/refFlat.txt ]; then
   wget -O ${REF_STORAGE_DIR}/refFlat.txt.gz http://hgdownload.cse.ucsc.edu/goldenPath/hg38/database/refFlat.txt
   gunzip ${REF_STORAGE_DIR}/refFlat.txt.gz
@@ -25,4 +22,3 @@ cat ${TRANSCIPT_LIMITED_FILE} ${FUSIM_FASTA_FILE} > ${FUSION_TRANSCRIPTOME}
 
 Rscript $DOCKER_SRC/create_fusim_ref.R ${FUSIM_TXT_FILE} ${FUSIM_REF_FILE}
 
-micromamba deactivate

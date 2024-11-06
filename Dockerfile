@@ -55,6 +55,6 @@ RUN R -q -e "install.packages(c('curl'))" && \
 ENV PATH="$PATH:/opt/conda/envs/samtools/bin:/opt/conda/envs/arriba/bin:/opt/conda/envs/fusionseeker/bin:/opt/conda/envs/starfusion/bin:/opt/conda/envs/normal/bin:/bin:/JAFFA/tools/bin:/JAFFA:/bin/fusim-0.2.2:/bin/Fusionseeker"
 
 COPY ./src /src
-COPY ./models /model
+COPY ./models /models
 
 ENTRYPOINT ["bash", "/src/sequential_run.sh"]
