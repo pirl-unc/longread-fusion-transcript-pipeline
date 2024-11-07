@@ -45,7 +45,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 USER root
 RUN apt update && \
-    apt install -y libcurl4-openssl-dev libssl-dev libxml2-dev liblzma-dev r-base curl sed wget && \
+    apt install -y libcurl4-openssl-dev libssl-dev libxml2-dev liblzma-dev r-base curl sed wget openjdk-11-jre && \
     apt clean;
 
 RUN R -q -e "install.packages(c('curl'))" && \

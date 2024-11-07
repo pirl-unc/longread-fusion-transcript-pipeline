@@ -25,7 +25,6 @@ echo $DATADIR/fusions-$1-$5-$6-$4.fq
 echo $DATADIR_MINIMAP/fusions-${1}-${5}-${6}-${4}.paf
 echo $GENION_DIR/fusions-$1-$5-$6-$4-genion-minsup-${9}.tsv
 
-#singularity exec --pid --bind /datastore longgf_0.1.2--h05f6578_1.sif \
 genion \
   -i ${DATADIR}/fusions-${1}-${5}-${6}-${4}.fq \
   --gtf ${GTF_REFERENCE_ENS} \

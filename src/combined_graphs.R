@@ -495,9 +495,11 @@ fusealln$coverage <- as.numeric(fusealln$coverage)
 
 marg <- theme(plot.margin = margin(0, 0, 0, 0, "pt")) 
 
+breaks <- as.numeric(coverage)
+
 gpp <- ggplot(fuseallp, aes(x = coverage, y = recall, color = tool)) + marg +
 	geom_errorbar(aes(ymin=recall-recall_sd, ymax=recall+recall_sd), width=.2, position=position_dodge(0.05)) +
-	geom_line() + scale_x_continuous(breaks=c(3, 5, 10, 30, 50, 100), limits=c(3, 100)) +
+	geom_line() + scale_x_continuous(breaks=breaks, limits=c(min(breaks), max(breaks))) +
 	theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), panel.background = element_blank(), axis.line = element_line(colour = "black")) +
 	theme(axis.title.x=element_blank(), axis.text.x=element_blank(), axis.ticks.x=element_blank()) + labs(tag='A') + ggtitle("Pacbio2021")
 
@@ -507,7 +509,7 @@ gpp <- gpp + theme(legend.position="none")
 
 gpn <- ggplot(fusealln, aes(x = coverage, y = recall, color = tool)) + marg +
 	geom_errorbar(aes(ymin=recall-recall_sd, ymax=recall+recall_sd), width=.2, position=position_dodge(0.05)) +
-	theme(legend.position="none") + geom_line() + scale_x_continuous(breaks=c(3, 5, 10, 30, 50, 100), limits=c(3, 100)) +
+	theme(legend.position="none") + geom_line() + scale_x_continuous(breaks=breaks, limits=c(min(breaks), max(breaks))) +
 	theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), panel.background = element_blank(), axis.line = element_line(colour = "black")) + 
 	theme(axis.title.x=element_blank(), axis.text.x=element_blank(), axis.ticks.x=element_blank()) + labs(tag='B') +
 	theme(axis.title.y=element_blank(), axis.text.y=element_blank(), axis.ticks.y=element_blank()) +
@@ -515,14 +517,14 @@ gpn <- ggplot(fusealln, aes(x = coverage, y = recall, color = tool)) + marg +
 
 gppr <- ggplot(fuseallp, aes(x = coverage, y = precision, color = tool)) + marg +
 	geom_errorbar(aes(ymin=precision-precision_sd, ymax=precision+precision_sd), width=.2, position=position_dodge(0.05)) +
-	theme(legend.position="none") + geom_line() + scale_x_continuous(breaks=c(3, 5, 10, 30, 50, 100), limits=c(3, 100)) +
+	theme(legend.position="none") + geom_line() + scale_x_continuous(breaks=breaks, limits=c(min(breaks), max(breaks))) +
 	theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), panel.background = element_blank(), axis.line = element_line(colour = "black")) +
 	theme(axis.title.x=element_blank(), axis.text.x=element_blank(), axis.ticks.x=element_blank()) +
         labs(tag='C')
 
 gppp <- ggplot(fusealln, aes(x = coverage, y = precision, color = tool)) + marg +
 	geom_errorbar(aes(ymin=precision-precision_sd, ymax=precision+precision_sd), width=.2, position=position_dodge(0.05)) +
-	theme(legend.position="none") + geom_line() + scale_x_continuous(breaks=c(3, 5, 10, 30, 50, 100), limits=c(3, 100)) +
+	theme(legend.position="none") + geom_line() + scale_x_continuous(breaks=breaks, limits=c(min(breaks), max(breaks))) +
 	theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), panel.background = element_blank(), axis.line = element_line(colour = "black")) +
 	theme(axis.title.y=element_blank(), axis.text.y=element_blank(), axis.ticks.y=element_blank()) +
 	theme(axis.title.x=element_blank(), axis.text.x=element_blank(), axis.ticks.x=element_blank()) +
@@ -533,7 +535,7 @@ gppp <- ggplot(fusealln, aes(x = coverage, y = precision, color = tool)) + marg 
 
 fpp <- ggplot(fuseallp, aes(x = coverage, y = F1, color = tool)) + marg +
 	geom_errorbar(aes(ymin=F1-F1_sd, ymax=F1+F1_sd), width=.2, position=position_dodge(0.05)) +
-	geom_line() + scale_x_continuous(breaks=c(3, 5, 10, 30, 50, 100), limits=c(3, 100)) +
+	geom_line() + scale_x_continuous(breaks=breaks, limits=c(min(breaks), max(breaks))) +
 	theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), panel.background = element_blank(), axis.line = element_line(colour = "black")) +
 	labs(tag='E')
 
@@ -543,7 +545,7 @@ fpp <- fpp + theme(legend.position="none")
 
 fpn <- ggplot(fusealln, aes(x = coverage, y = F1, color = tool)) + marg +
 	geom_errorbar(aes(ymin=F1-F1_sd, ymax=F1+F1_sd), width=.2, position=position_dodge(0.05)) +
-	theme(legend.position="none") + geom_line() + scale_x_continuous(breaks=c(3, 5, 10, 30, 50, 100), limits=c(3, 100)) +
+	theme(legend.position="none") + geom_line() + scale_x_continuous(breaks=breaks, limits=c(min(breaks), max(breaks))) +
 	theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), panel.background = element_blank(), axis.line = element_line(colour = "black")) + 
 	labs(tag='F') +
 	theme(axis.title.y=element_blank(), axis.text.y=element_blank(), axis.ticks.y=element_blank())
