@@ -15,7 +15,7 @@ if [[ ${5} == *"pacbio"* ]]; then
   DATATYPE=isoseq
 fi
 
-/bin/Fusionseeker/fusionseeker \
+/bin/FusionSeeker/fusionseeker \
   --thread ${THREADS} \
   --bam ${DATADIR_MINIMAP}/fusions-${1}-${5}-${6}-${4}-sorted.bam \
   --datatype $DATATYPE \

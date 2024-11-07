@@ -22,13 +22,13 @@ fi
 
 #bash $DOCKER_SRC/generate_mapping.sh
 
-bash $DOCKER_SRC/generate_longgf.sh
+#bash $DOCKER_SRC/generate_longgf.sh
 bash $DOCKER_SRC/generate_jaffal.sh
 bash $DOCKER_SRC/generate_genion.sh
 bash $DOCKER_SRC/generate_pbfusion.sh
 bash $DOCKER_SRC/generate_fusionseeker.sh
 
-bash $DOCKER_SRC/generate_arriba.sh
-bash $DOCKER_SRC/generate_starfusion.sh
+#bash $DOCKER_SRC/generate_arriba.sh
+#bash $DOCKER_SRC/generate_starfusion.sh
 
 bash $DOCKER_SRC/generate_graphs.sh
