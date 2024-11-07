@@ -27,7 +27,7 @@ echo $GENION_DIR/fusions-$1-$5-$6-$4-genion-minsup-${9}.tsv
 
 genion \
   -i ${DATADIR}/fusions-${1}-${5}-${6}-${4}.fq \
-  --gtf ${GTF_REFERENCE} \
+  --gtf ${GTF_REFERENCE_ENS} \
   --gpaf ${DATADIR_MINIMAP}/fusions-${1}-${5}-${6}-${4}.paf \
   -s ${GENSELF} \
   -d ${GENOMIC_SUPER_DUPS} \
