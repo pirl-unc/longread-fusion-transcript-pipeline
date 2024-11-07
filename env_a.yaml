@@ -5,3 +5,4 @@ channels:
 dependencies:
     - arriba=2.4.0
     - pysam=0.17
+    - openjdk=11
