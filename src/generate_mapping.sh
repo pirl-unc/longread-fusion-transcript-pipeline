@@ -20,7 +20,8 @@ for i in $(seq 1 ${REPLICATES}); do
     for j in ${!QUALITY[@]}; do
       for k in ${!TECH[@]}; do
 	 for n in ${!N_TRANSCRIPTS[@]}; do
-           eval ${TF_BASH} $DOCKER_SRC/minimap2_helper.sh ${COVERAGE[$q]} 1 1 ${i} ${QUALITY[$j]} ${TECH[$k]} ax sam ${N_TRANSCRIPTS[$n]}
+           #eval ${TF_BASH} $DOCKER_SRC/minimap2_helper.sh ${COVERAGE[$q]} 1 1 ${i} ${QUALITY[$j]} ${TECH[$k]} ax sam ${N_TRANSCRIPTS[$n]}
+	   echo "pass\n"
 	 done
       done
     done
@@ -44,7 +45,8 @@ for i in $(seq 1 ${REPLICATES}); do
     for j in ${!QUALITY[@]}; do
       for k in ${!TECH[@]}; do
 	 for n in ${!N_TRANSCRIPTS[@]}; do
-           eval ${TF_BASH} $DOCKER_SRC/pbmm2_helper.sh ${COVERAGE[$q]} 1 1 ${i} ${QUALITY[$j]} ${TECH[$k]} ax sam ${N_TRANSCRIPTS[$n]}
+           #eval ${TF_BASH} $DOCKER_SRC/pbmm2_helper.sh ${COVERAGE[$q]} 1 1 ${i} ${QUALITY[$j]} ${TECH[$k]} ax sam ${N_TRANSCRIPTS[$n]}
+	   echo "pass\n"
 	 done
       done
     done
@@ -55,7 +57,8 @@ for i in $(seq 1 ${REPLICATES}); do
   for q in ${!COVERAGE[@]}; do
     for j in ${!READ_LENGTHS[@]}; do
       for n in ${!N_TRANSCRIPTS[@]}; do
-        eval ${TF_BASH} $DOCKER_SRC/star_helper2.sh ${COVERAGE[$q]} 1 1 ${READ_LENGTHS[$j]} ${i} ${N_TRANSCRIPTS[$n]}
+        #eval ${TF_BASH} $DOCKER_SRC/star_helper2.sh ${COVERAGE[$q]} 1 1 ${READ_LENGTHS[$j]} ${i} ${N_TRANSCRIPTS[$n]}
+	echo "pass\n"
       done
     done
   done

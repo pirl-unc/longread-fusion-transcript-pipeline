@@ -20,5 +20,5 @@ echo $7 #ax
 echo $8 #paf
 echo $9 #n
 
-minimap2 -t ${THREADS} --MD -cx splice ${DNA_REFERENCE_ENS} ${DATADIR}/fusions-${1}-${5}-${6}-${4}.fq.gz > ${DATADIR_MINIMAP}/fusions-${1}-${5}-${6}-${4}.${8}
+minimap2 -t ${THREADS} --MD -cx splice ${DNA_REFERENCE} ${DATADIR}/fusions-${1}-${5}-${6}-${4}.fq.gz > ${DATADIR_MINIMAP}/fusions-${1}-${5}-${6}-${4}.${8}
 
