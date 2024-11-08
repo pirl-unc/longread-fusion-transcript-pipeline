@@ -26,6 +26,11 @@ if [ ! -f ${GENOMIC_SUPER_DUPS} ]; then
   gunzip -d ${GENOMIC_SUPER_DUPS}.gz
 fi
 
+if [ ! -f /mnt/ref/hg38.fa ]; then
+  wget -O JAFFAL_refs.tar.gz https://figshare.com/ndownloader/files/25410494
+  tar xzvf JAFFAL_refs.tar.gz
+fi
+
 if [ ! -d ${CTAT_LIB_DIR} ]; then
   wget -O ${CTAT_LIB_DIR}.tar.gz https://data.broadinstitute.org/Trinity/CTAT_RESOURCE_LIB/GRCh38_gencode_v22_CTAT_lib_Mar012021.plug-n-play.tar.gz
   tar xvzf ${CTAT_LIB_DIR}.tar.gz
