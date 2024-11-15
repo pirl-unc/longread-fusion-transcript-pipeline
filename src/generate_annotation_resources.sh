@@ -15,10 +15,20 @@ if [ ! -f ${CDNA_REFERENCE} ]; then
   gunzip -d ${CDNA_REFERENCE}.gz
 fi
 
+if [ ! -f ${CDNA_REFERENCE_ENS} ]; then
+  wget -O ${CDNA_REFERENCE_ENS}.gz http://ftp.ensembl.org/pub/release-105/fasta/homo_sapiens/cdna/Homo_sapiens.GRCh38.cdna.all.fa.gz
+  gunzip -d ${CDNA_REFERENCE_ENS}.gz
+fi
+
 if [ ! -f ${GTF_REFERENCE} ]; then
   #wget -O ${GTF_REFERENCE}.gz http://ftp.ensembl.org/pub/release-105/gtf/homo_sapiens/Homo_sapiens.GRCh38.105.gtf.gz
   wget -O ${GTF_REFERENCE}.gz https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_38/gencode.v38.annotation.gtf.gz
   gunzip -d ${GTF_REFERENCE}.gz
+fi
+
+if [ ! -f ${GTF_REFERENCE_ENS} ]; then
+  wget -O ${GTF_REFERENCE_ENS}.gz http://ftp.ensembl.org/pub/release-105/gtf/homo_sapiens/Homo_sapiens.GRCh38.105.gtf.gz
+  gunzip -d ${GTF_REFERENCE_ENS}.gz
 fi
 
 if [ ! -f ${GENOMIC_SUPER_DUPS} ]; then
