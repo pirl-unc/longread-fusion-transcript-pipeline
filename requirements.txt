@@ -1,6 +1,0 @@
-rustyread==2.1.1
-R=4.4.1
-r-xml
-genion==1.0.1
-longgf==1.1.2
-jaffal==2.3.1
