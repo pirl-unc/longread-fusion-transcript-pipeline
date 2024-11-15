@@ -4,16 +4,29 @@ if (!require("GenomicFeatures", quietly = TRUE))
 	    BiocManager::install("GenomicFeatures")
 if (!require("Biostrings", quietly = TRUE))
 	    BiocManager::install("Biostrings")
+if (!require("rtracklater", quietly = TRUE))
+	    BiocManager::install("rtracklayer")
+if (!require("biomaRt", quietly = TRUE))
+	    BiocManager::install("biomaRt")
+
 
 library(GenomicFeatures)
 library(Biostrings)
+library(biomaRt)
+library(rtracklayer)
+
 
 arg <- commandArgs(trailingOnly=TRUE)
 
-arg[1] <- '/home/vantwisk/vantwisk/fusions/seq_run2/ref/gencode.v38.annotation.gtf'
-arg[2] <- '/home/vantwisk/vantwisk/fusions/seq_run2/ref/gencode.v38.transcripts.fa'
-arg[3] <- '/home/vantwisk/vantwisk/fusions/seq_run2/ref/Homo_sapiens_transcriptome_limited_1000.fa'
-arg[4] <- 1000
+#arg[2] <- '/home/vantwisk/vantwisk/fusions/seq_run4/ref/Homo_sapiens.GRCh38.cdna.all.fa'
+#arg[1] <- '/home/vantwisk/vantwisk/fusions/seq_run4/ref/Homo_sapiens.GRCh38.105.gtf'
+#arg[3] <- '/home/vantwisk/vantwisk/fusions/seq_run2/ref/Homo_sapiens_transcriptome_limited_1000_test.fa'
+#arg[4] <- 1000
+
+#arg[1] <- '/home/vantwisk/vantwisk/fusions/seq_run4/ref/gencode.v38.annotation.gtf'
+#arg[2] <- '/home/vantwisk/vantwisk/fusions/seq_run4/ref/gencode.v38.transcripts.fa'
+#arg[3] <- '/home/vantwisk/vantwisk/fusions/seq_run4/ref/Homo_sapiens_transcriptome_limited_1000_tester.fa'
+#arg[4] <- 1000
 
 message(arg[1])
 message(arg[2])
@@ -28,29 +41,48 @@ fa <- Biostrings::readDNAStringSet(arg[2])
 gtf <- rtracklayer::import(arg[1])
 #gtf <- import(arg[1])
 
+
 fasta_out <- arg[3]
 #fasta_out <- arg[3]
 
 ele <- elementMetadata(gtf)
 ele <- ele[ele$type == 'transcript',]
 
-ele['full_tx'] <- paste0(ele$transcript_id, '.', ele$transcript_version)
+if (!is.null(ele$transcript_version)) {
+  ele['full_tx'] <- paste0(ele$transcript_id, '.', ele$transcript_version)
+} else {
+  ele['full_tx'] <- ele$transcript_id
+}
 
 nam <- names(fa)
-nam <- strsplit(nam, ' ')
-
-tx1 <- vapply(nam, function(x) x[2], character(1))
-tx2 <- vapply(nam, function(x) x[3], character(1))
+if (length(strsplit(nam[1], "\\|")[[1]]) > 3) {
+  nam <- strsplit(nam, "\\|")
+} else {
+  nam <- strsplit(nam, ' ')
+}
 
 tx_act <- vapply(nam, function(x) x[1], character(1))
-
-vals1 <- ele[ele$full_tx %in% tx1,]
 
 wh1 <- which(tx_act %in% ele$full_tx)
 fa1 <- fa[wh1]
 fa1 <- fa1[lengths(fa1) > 100]
 
-fa1 <- sample(fa1, arg[4], replace=F)
+if (length(strsplit(names(fa1)[1], "\\|")[[1]]) > 3) {
+  tx_act <- vapply(strsplit(names(fa1), "\\|"), function(x) x[1], character(1))
+} else {
+   tx_act <- vapply(strsplit(names(fa1), ' '), function(x) x[1], character(1))
+}
+
+mart <- useEnsembl("ensembl",dataset="hsapiens_gene_ensembl", mirror="useast")
+## get everything
+BM.info <- getBM(attributes=c("ensembl_gene_id","ensembl_transcript_id_version","hgnc_symbol","transcript_is_canonical"),mart=mart)
+
+## canonical transcripts
+BM.info.canon <- subset(BM.info,transcript_is_canonical == 1)
+canonical <- BM.info.canon$ensembl_transcript_id
+
+#fa1 <- sample(fa1, arg[4], replace=F)
+fa1 <- fa1[tx_act %in% canonical]
 
 writeXStringSet(fa1, fasta_out)
 #gtf1 <- gtf[wh1,]

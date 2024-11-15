@@ -5,9 +5,9 @@
 #SBATCH --cpus-per-task 1
 #SBATCH --mem=128G
 
-DATADIR=${SIM_STORAGE_DIR}/longreads_${9}k
-DATADIR_MINIMAP=${ALIGNMENT_STORAGE_DIR}/longreads_${9}k_minimap2
-GENION_DIR=${GENION_STORAGE_DIR}/longreads_${9}k_genion
+DATADIR=${SIM_STORAGE_DIR}/longreads_${10}k
+DATADIR_MINIMAP=${ALIGNMENT_STORAGE_DIR}/longreads_${10}k_minimap2
+GENION_DIR=${GENION_STORAGE_DIR}/longreads_${10}k_genion_again
 
 [ ! -d ${GENION_DIR} ] && mkdir ${GENION_DIR}
 
@@ -32,5 +32,5 @@ genion \
   --gpaf ${DATADIR_MINIMAP}/fusions-${1}-${5}-${6}-${4}.paf \
   -s ${REF_STORAGE_DIR}/genion-selfalign.tsv \
   -d ${GENOMIC_SUPER_DUPS} \
-  -o ${GENION_DIR}/fusions-${1}-${5}-${6}-${4}-genion-minsup-${10}.tsv \
-  --min-support ${10}
+  -o ${GENION_DIR}/fusions-${1}-${5}-${6}-${4}-genion-minsup-${9}.tsv \
+  --min-support ${9}

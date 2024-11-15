@@ -1,13 +1,14 @@
 #!/bin/bash
-#SBATCH --job-name SAMP1
+#SBATCH --job-name star_index
 #SBATCH --partition allnodes
 #SBATCH --time UNLIMITED
 #SBATCH --cpus-per-task 1
 #SBATCH --mem-per-cpu 128g
 
 #singularity exec --pid --bind /datastore star_latest.sif \
-/home/vantwisk/STAR-2.7.10a/bin/Linux_x86_64_static/STAR --runThreadN 32 \
+/home/vantwisk/STAR-2.7.10a/bin/Linux_x86_64_static/STAR \
+  --runThreadN ${THREADS} \
   --runMode genomeGenerate \
-  --genomeDir hg38_star_index \
-  --genomeFastaFiles ../hg38.fa
-  --sjdbGTFfile gencode.v38.annotation.gtf
+  --genomeDir ${DNA_REFERENCE}_index \
+  --genomeFastaFiles ${DNA_REFERENCE} \
+  --sjdbGTFfile ${GTF_REFERENCE}

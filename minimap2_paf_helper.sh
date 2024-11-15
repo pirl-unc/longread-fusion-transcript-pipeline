@@ -20,4 +20,4 @@ echo $7 #ax
 echo $8 #paf
 echo $9 #n
 
-/home/vantwisk/minimap2-2.21_x64-linux/minimap2 -t ${THREADS} --MD -cx splice ${DNA_REFERENCE} ${DATADIR}/fusions-${1}-${5}-${6}-${4}.fq > ${DATADIR_MINIMAP}/fusions-${1}-${5}-${6}-${4}.${8}
+/home/vantwisk/minimap2-2.21_x64-linux/minimap2 -t ${THREADS} -cx splice -uf -k14 ${DNA_REFERENCE_ENS} ${DATADIR}/fusions-${1}-${5}-${6}-${4}.fq.gz > ${DATADIR_MINIMAP}/fusions-${1}-${5}-${6}-${4}.${8}

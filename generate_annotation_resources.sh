@@ -26,6 +26,11 @@ if [ ! -f ${GENOMIC_SUPER_DUPS} ]; then
   gunzip -d ${GENOMIC_SUPER_DUPS}.gz
 fi
 
+if [ ! -d ${CTAT_LIB_DIR} ]; then
+  wget -O ${CTAT_LIB_DIR}.tar.gz https://data.broadinstitute.org/Trinity/CTAT_RESOURCE_LIB/GRCh38_gencode_v22_CTAT_lib_Mar012021.plug-n-play.tar.gz
+  tar xvzf ${CTAT_LIB_DIR}.tar.gz
+fi
+
 if [ ! -f ${TRANSCRIPT_LIMITED_FILE} ]; then
-  Rscript generate_breakpoints.R ${GTF_REFERENCE_ENS} ${CDNA_REFERENCE_ENS} ${TRANSCRIPT_LIMITED_FILE} ${TRANSCRIPT_LIMIT}
+  Rscript generate_breakpoints.R ${GTF_REFERENCE} ${CDNA_REFERENCE} ${TRANSCRIPT_LIMITED_FILE} ${TRANSCRIPT_LIMIIT}
 fi

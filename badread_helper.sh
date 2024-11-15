@@ -19,10 +19,11 @@ echo $8
 
 rustyread --threads 32 simulate --reference ${FUSION_TRANSCRIPTOME} \
     --quantity ${1}x \
-    --qscore_model /home/vantwisk/Badread/badread/qscore_models/${6} --glitches 0,0,0 --junk_reads 0 --random_reads 0 \
-    --error_model /home/vantwisk/Badread/badread/error_models/${6} --identity ${5} \
+    --qscore_model /home/vantwisk/vantwisk/fusions/git/longread-fusion-transcript-pipeline/models/qscore_models/${6} --glitches 0,0,0 --junk_reads 0 --random_reads 0 \
+    --error_model /home/vantwisk/vantwisk/fusions/git/longread-fusion-transcript-pipeline/models/error_models/${6} --identity ${5} \
     --chimera 0 --seed $RANDOM > ${OUTDIR}/fusions-${1}-${5}-${6}-${4}.fq #pfun/fuse-${1}-${4}.fq.gz  #fuse-transcript-${1}-${4}.fq.gz
 
 awk '{ if (NR%4==1) gsub(".*","@transcript/"NR,$1); print }' ${OUTDIR}/fusions-${1}-${5}-${6}-${4}.fq > ${OUTDIR}/fusions-${1}-${5}-${6}-${4}_2.fq
 mv ${OUTDIR}/fusions-${1}-${5}-${6}-${4}_2.fq ${OUTDIR}/fusions-${1}-${5}-${6}-${4}.fq
+gzip ${OUTDIR}/fusions-${1}-${5}-${6}-${4}.fq
 #awk '{ if (NR%4==1) gsub(".*","@transcript/"NR,$1); print }' ${OUTDIR}/fusions-${1}-${5}-${6}-${4}.fq > ${OUTDIR}/fusions-${1}-${5}-${6}-${4}.fq

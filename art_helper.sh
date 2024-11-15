@@ -15,5 +15,8 @@ echo $3
 echo $4
 
 #for j in $(seq 1 10); do
-/home/vantwisk/art_bin_MountRainier/art_illumina --rndSeed $RANDOM -ss HS25 -i ${FUSION_TRANSCRIPTOME} -o ${OUTDIR}/fusions-${1}-${4}-${5}- -l ${2} -f ${1} -p -m 500 -s 10
+/home/vantwisk/art_bin_MountRainier/art_illumina --rndSeed $RANDOM -ss HS25 -i ${FUSION_TRANSCRIPTOME} -o ${OUTDIR}/fusions-${1}-${4}-${5}- -l ${4} -f ${1} -p -m 500 -s 10
 #done
+
+#cat ${OUTDIR}/fusions-${1}-${4}-${5}-1.fq | gzip > ${OUTDIR}/fusions-${1}-${4}-${5}-1.fq.gz
+#cat ${OUTDIR}/fusions-${1}-${4}-${5}-2.fq | gzip > ${OUTDIR}/fusions-${1}-${4}-${5}-2.fq.gz

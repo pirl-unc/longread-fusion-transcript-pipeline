@@ -11,7 +11,7 @@ ARRIBA_DIR=${ARRIBA_STORAGE_DIR}/shortreads_${6}k_arriba
 [ ! -d ${ARRIBA_DIR} ] && mkdir ${ARRIBA_DIR}
 
 /home/vantwisk/arriba_v2.2.1/arriba \
-    -x ${MAPPING_DIR}/fusions-${1}-${4}-${5}-Aligned.sortedByCoord.out.bam \
+    -x ${MAPPING_DIR}/fusions-${1}-${4}-${5}-Aligned.out.bam \
     -o ${ARRIBA_DIR}/fusions-${1}-${4}-${5}.tsv -O ${ARRIBA_DIR}/fusions-${1}-${4}-${5}.discarded.tsv \
     -a ${DNA_REFERENCE} \
     -g ${GTF_REFERENCE} \
