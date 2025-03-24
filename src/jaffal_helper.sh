@@ -23,7 +23,7 @@ for i in $(seq 1 ${REPLICATES}); do
   cp ${DATADIR}/fusions-${1}-${5}-${6}-${i}.fq.gz ${DATADIR}/fusions-${1}-${JAFFAL_QUALITY_NAME}-${6}-${i}.fq.gz
 done
 
-/JAFFA/tools/bin/bpipe run /JAFFA/JAFFAL.groovy \
+/home/vantwisk/JAFFA-version-2.2/tools/bin/bpipe run /home/vantwisk/JAFFA-version-2.2/JAFFAL.groovy \
   ${DATADIR}/fusions-${1}-${JAFFAL_QUALITY_NAME}-${6}-${4}.fq.gz
 
 cd $CURRENT

@@ -10,4 +10,4 @@ DATADIR_PBMM2=${ALIGNMENT_STORAGE_DIR}/longreads_${9}k_PBMM2_new
 
 [ ! -d ${DATADIR_PBMM2} ] && mkdir ${DATADIR_PBMM2}
 
-pbmm2 align -j ${THREADS} --preset ISOSEQ --sort ${PBMM2_MMI} ${DATADIR}/fusions-${1}-${5}-${6}-${4}.fq.gz ${DATADIR_PBMM2}/fusions-${1}-${5}-${6}-${4}-pbmm2.bam
+pbmm2 align -j ${THREADS} ${PBMM2_MMI} ${DATADIR}/fusions-${1}-${5}-${6}-${4}.fq.gz ${DATADIR_PBMM2}/fusions-${1}-${5}-${6}-${4}-pbmm2.bam --preset ISOSEQ
