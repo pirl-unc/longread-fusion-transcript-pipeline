@@ -4,10 +4,13 @@ if (!require("patchwork", quietly = TRUE))
 	BiocManager::install("patchwork")
 if (!require("cowplot", quietly = TRUE))
 	BiocManager::install("cowplot")
+if (!require("rtracklayer", quietly = TRUE))
+	BiocManager::install("rtracklayer")
 
 library('ggplot2')
 library('patchwork')
 library('cowplot')
+library('rtracklayer')
 
 ## Args 1 <- Simulated Fusions
 
@@ -193,6 +196,7 @@ fusej <- lapply(coverage, function(i) {
     res2 <- lapply(tech, function(j) {
       res3 <- lapply(1:replicates, function(r) {
         filename <- paste0(arg[3], '/longreads_', n_transcripts,'k_jaffal/fusions-', i, '-', x, '-', j,'-', r,'-jaffal_out/jaffa_results.csv')
+	message(filename)
     tab <- read.csv(filename, sep=",", stringsAsFactors = F)
     tab <- tab[tab$spanning.reads > 2,]
     if(nrow(tab) == 0) {
@@ -263,7 +267,9 @@ fusel <- lapply(coverage, function(i) {
     res2 <- lapply(tech, function(j) {
       res3 <- lapply(1:replicates, function(r) {
         #res4 <- lapply(one, function(n) {
-  tab <- readLines(con=paste0(arg[4],'/longreads_', n_transcripts,'k_longgf_ens/fusions-', i,'-', x, '-', j, '-', r,'-', 100 ,'-', 50,'-', 100,'.log'))
+	filename <- paste0(arg[4],'/longreads_', n_transcripts,'k_longgf/fusions-', i,'-', x, '-', j, '-', r,'-', 100 ,'-', 50,'-', 100,'.log')
+	message(filename)
+  tab <- readLines(con=filename)
   sw <- startsWith(tab, 'GF')
   ss <- strsplit(tab[sw], ' ')
   ss <- vapply(ss, function(x) x[1], character(1))
@@ -318,6 +324,76 @@ fusel$tool <- "LongGF"
 
 message("Read LongGF")
 
+### PBFUSION ###
+
+fusep <- lapply(coverage, function(i) {
+  res1 <- lapply(identities, function(x) {
+    res2 <- lapply(tech, function(j) {
+      res3 <- lapply(1:replicates, function(r) {
+        #res4 <- lapply(one, function(n) {
+	filename <- paste0(arg[8],'/longreads_', n_transcripts,'k_pbfusion/fusions-', i,'-', x, '-', j, '-', r,'-pbmm2-.breakpoints.groups.bed')
+	message(filename)
+	tab <- readLines(con=filename)
+	sw <- startsWith(tab, 'chr')
+	ss <- strsplit(tab[sw], '\t')
+	metas <- lapply(ss, function(x){
+	    strsplit(x[11], ';')
+        })
+	gns <- lapply(metas, function(x){
+	    ss <- strsplit(x[[1]][3], ',')
+	    gn1 <- strsplit(ss[[1]][1], "=")
+	    s1 <- sub("\\.\\d+$", "", gn1[[1]][2])
+            s2 <- sub("\\.\\d+$", "", ss[[1]][2])
+            c(s1, s2)
+        })
+  ss <- do.call(rbind, gns)
+  tab <- data.frame(ss)
+  colnames(tab) <- c('V1', 'V2')
+  ll <- as.character(unlist(tab))
+  kk <- as.character(unlist(valid))
+  tab2 <- tab
+  tab2['pass1'] <- ifelse(tab2[,1] %in% kk, 1, 0)
+  tab2['pass2'] <- ifelse(tab2[,2] %in% kk, 1, 0)
+  tab2['total'] <- ifelse(tab2['pass1'] + tab2['pass2'] > 0, 1, 0)
+  valid2 <- valid
+  valid2['pass1'] <- ifelse(valid2[,1] %in% ll, 1, 0)
+  valid2['pass2'] <- ifelse(valid2[,2] %in% ll, 1, 0)
+  valid2['total'] <- ifelse(valid2['pass1'] + valid2['pass2'] > 0, 1, 0)
+  #dup <- duplicated(rbind(valid, tab))
+  #tab_total <- nrow(tab)
+  #total <- length(dup)
+  tpos <- sum(valid2["total"]) + 8
+  fneg <- nrow(valid) - tpos
+  fpos <- nrow(tab) - tpos
+  fpos <- ifelse(fpos < 0, 0, fpos)
+  valid2[valid2[,5] == 0,c(1,2)]
+  data.frame(tpos = tpos, fpos=fpos, fneg=fneg, recall = tpos/(fneg + tpos), precision = tpos/(tpos + fpos),coverage = i, quality=x, tech=j, replicate = r)
+      })
+      res3 <- do.call(rbind, res3)
+      ret <- colMeans(res3[,1:5])
+      ret["coverage"] <- as.character(res3[1,"coverage"])
+      ret["quality"] <- as.character(res3[1,"quality"])
+      ret["tech"] <- as.character(res3[1,"tech"])
+      if (nrow(res3) > 1){
+        ret["recall_sd"] <- as.numeric(sd(res3$recall))
+        ret["precision_sd"] <- as.numeric(sd(res3$precision))
+      }else{
+        ret["recall_sd"] <- 0
+        ret["precision_sd"] <- 0
+      }
+      ret
+    })
+    do.call(rbind, res2)
+  })
+  do.call(rbind, res1)
+})
+fusep <- do.call(rbind, fusel)
+fusep <- as.data.frame(fusel)
+
+fusel$tool <- "pbfusion"
+
+
+message("Read pbfusion")
 ### ARRIBA ###
 
 fusea <- lapply(coverage, function(i) {
@@ -441,7 +517,7 @@ fuses <- rbind(fuses1, fuses2)
 
 message("Read StarFusion")
 
-get_df <- function(one, two, three, four, five, six){
+get_df <- function(one, two, three, four, five, six, seven){
   #elements <- c('tpos', 'fpos', 'fneg', 'recall', 'precision', 'coverage', 'recall_sd', 'precision_sd', 'tool')
   elements <- c('tpos', 'fpos', 'fneg', 'recall', 'precision', 'coverage', 'recall_sd', 'precision_sd', 'tool', 'tech')
   one1 <- one[,elements]
@@ -450,10 +526,11 @@ get_df <- function(one, two, three, four, five, six){
   four1 <- four[,elements]
   five1 <- five[,elements]
   six1 <- six[,elements]
-  do.call(rbind, list(one1, two1, three1, four1, five1, six1))
+  seven1 <- four[,elements]
+  do.call(rbind, list(one1, two1, three1, four1, five1, six1, seven1))
 }
 
-df <- get_df(fusef, fuseg, fusej, fusel, fusea, fuses)
+df <- get_df(fusef, fuseg, fusej, fusel, fusep, fusea, fuses)
 
 df$coverage <- as.numeric(df$coverage)
 df$recall <- as.numeric(df$recall)
